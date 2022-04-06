@@ -5,14 +5,8 @@ import { WidgetModule } from './widget/widget.module';
 import { PagetitleComponent } from './pagetitle/pagetitle.component';
 
 @NgModule({
-  declarations: [
-
-    PagetitleComponent
-  ],
-  imports: [
-    CommonModule,
-    WidgetModule
-  ],
-  exports: [PagetitleComponent]
+  declarations: [PagetitleComponent],
+  imports: [CommonModule, WidgetModule],
+  exports: [PagetitleComponent],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -1,0 +1,76 @@
+<!-- start page title -->
+<app-pagetitle
+  title="Send SMS"
+  [breadcrumbItems]="breadCrumbItems"
+></app-pagetitle>
+<!-- end page title -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">SMS Validation - Normal</h4>
+        <p class="card-title-desc">
+          Provide valuable, actionable lead generation to your users available
+          in all our supported browsers.
+        </p>
+      </div>
+      <div class="card-body">
+        <form class="needs-validation" [formGroup]="smsForm">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="validationCustom01">Mobile NUmbers</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom01"
+                  formControlName="mobileNumbers"
+                  placeholder="Add mobile numbers"
+                  [ngClass]="{
+                    'is-valid': submit && form.mobileNumbers.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.mobileNumbers.errors"
+                  class="valid-feedback"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="validationCustom02">Message</label>
+                <textarea
+                  class="form-control"
+                  id="validationCustom02"
+                  formControlName="message"
+                  placeholder="Enter message here"
+                  [ngClass]="{ 'is-valid': submit && form.message.errors }"
+                ></textarea>
+                <div
+                  *ngIf="submit && form.message.errors"
+                  class="valid-feedback"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              (click)="sendTextLocalSMS()"
+            >
+              Send
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>

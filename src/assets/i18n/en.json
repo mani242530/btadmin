@@ -80,7 +80,7 @@
         "BRAND": "Brand"
       }
     }
-  }, 
+  },
   "MENUITEMS": {
     "MENU": {
       "TEXT": "Menu"
@@ -97,6 +97,24 @@
     "DASHBOARDS": {
       "TEXT": "Dashboard",
       "BADGE": "04"
+    },
+    "REPORTS": {
+      "TEXT": "Reports"
+    },
+    "UPDATES": {
+      "TEXT": "Updates"
+    },
+    "USERS_LIST": {
+      "TEXT": "Users"
+    },
+    "EMPLOYEES": {
+      "TEXT": "Employees"
+    },
+    "SMS_GATEWAY": {
+      "TEXT": "Send SMS"
+    },
+    "ADVERTISE": {
+      "TEXT": "Advertise"
     },
     "APPS": {
       "TEXT": "Apps",
@@ -229,6 +247,6 @@
           }
         }
       }
-    }        
+    }
   }
 }

@@ -41,6 +41,9 @@ class FirebaseAuthBackend {
             firebase.auth().signInWithEmailAndPassword(email, password).then((user: any) => {
                 // eslint-disable-next-line no-redeclare
                 var user: any = firebase.auth().currentUser;
+                user.updateProfile({
+                    displayName: 'Admin'
+                  })
                 resolve(user);
             }, (error: any) => {
                 reject(this._handleError(error));

@@ -43,11 +43,7 @@ export class TopbarComponent implements OnInit {
    * Language Listing
    */
   listLang = [
-    { text: 'English', flag: 'assets/images/flags/us.jpg', lang: 'en' },
-    { text: 'Spanish', flag: 'assets/images/flags/spain.jpg', lang: 'es' },
-    { text: 'German', flag: 'assets/images/flags/germany.jpg', lang: 'de' },
-    { text: 'Italian', flag: 'assets/images/flags/italy.jpg', lang: 'it' },
-    { text: 'Russian', flag: 'assets/images/flags/russia.jpg', lang: 'ru' },
+    { text: 'English', flag: 'assets/images/flags/in.png', lang: 'en' },
   ];
 
   @Output() settingsButtonClicked = new EventEmitter();
@@ -64,7 +60,7 @@ export class TopbarComponent implements OnInit {
     const val = this.listLang.filter(x => x.lang === this.cookieValue);
     this.countryName = val.map(element => element.text);
     if (val.length === 0) {
-      if (this.flagvalue === undefined) { this.valueset = 'assets/images/flags/us.jpg'; }
+      if (this.flagvalue === undefined) { this.valueset = 'assets/images/flags/in.png'; }
     } else {
       this.flagvalue = val.map(element => element.flag);
     }
