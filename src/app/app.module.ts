@@ -17,6 +17,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 import { environment } from '../environments/environment';
@@ -66,6 +67,7 @@ export function createTranslateLoader(http: HttpClient): any {
     AngularFireAuthModule,
     AngularFirestoreModule,
     NgxSpinnerModule,
+    NgApexchartsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

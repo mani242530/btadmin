@@ -47,6 +47,8 @@ export class DashboardComponent implements OnInit {
   tradeslineChart!: ChartType;
   investedlineChart!: ChartType;
   profitlineChart!: ChartType;
+  simplePieChart!: ChartType;
+  donutChart!: ChartType;
   recentActivity: any;
   News: any;
   transactionsAll: any;
@@ -55,8 +57,11 @@ export class DashboardComponent implements OnInit {
 
   totalRegisteredUsers = 0;
   totalSupplier = 0;
+  totalBooking = 0;
   totalDriverOwner = 0;
+  totalActiveUsers = 0;
   totalInactiveUsers = 0;
+
   company: any;
   getCompanys!: Observable<any>;
   companysCollection!: AngularFirestoreCollection<Company>;
@@ -158,6 +163,8 @@ export class DashboardComponent implements OnInit {
     this.transactionsAll = transactionsAll;
     this.transactionsBuy = transactionsBuy;
     this.transactionsSell = transactionsSell;
+    this.simplePieChart = this.firmActivityChart();
+    this.donutChart = this.activeInactiveChart();
     try {
       this.spinner.show();
       this.companysCollection = this.fbstore.collection(
@@ -187,9 +194,13 @@ export class DashboardComponent implements OnInit {
           this.totalInactiveUsers = 0;
         } else {
           this.totalRegisteredUsers = snapshot.length;
-          
+
           this.totalSupplier = snapshot.filter(
             (obj: any) => obj.firmActivity === 'Supplier'
+          ).length;
+
+          this.totalBooking = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Booking'
           ).length;
 
           this.totalDriverOwner = snapshot.filter(
@@ -197,14 +208,75 @@ export class DashboardComponent implements OnInit {
               obj.firmActivity === 'Driver' || obj.firmActivity === 'Owner'
           ).length;
 
+          this.totalActiveUsers = snapshot.filter(
+            (obj: any) => obj.accountStatus === 'Active'
+          ).length;
+
           this.totalInactiveUsers = snapshot.filter(
             (obj: any) => obj.accountStatus === 'Inactive'
           ).length;
+
+          this.simplePieChart = this.firmActivityChart();
+          this.donutChart = this.activeInactiveChart();
         }
       });
     } catch (error) {
       this.spinner.hide();
       this.toastr.error('Something went wrong. Please check after some time!');
     }
+  }
+  /**
+   * Fetches Firm Activity chart
+   */
+  firmActivityChart() {
+    const simplePieChart: ChartType = {
+      chart: { height: 320, type: 'pie' },
+      series: [this.totalBooking, this.totalSupplier],
+      labels: ['Booking', 'Supplier'],
+      colors: ['#2ab57d', '#5156be'],
+      legend: {
+        show: !0,
+        position: 'bottom',
+        horizontalAlign: 'center',
+        verticalAlign: 'middle',
+        floating: !1,
+        fontSize: '14px',
+        offsetX: 0,
+      },
+      responsive: [
+        {
+          breakpoint: 600,
+          options: { chart: { height: 240 }, legend: { show: !1 } },
+        },
+      ],
+    };
+    return simplePieChart;
+  }
+  /**
+   * Fetches Firm Activity chart
+   */
+  activeInactiveChart() {
+    const donutChart: ChartType = {
+      chart: { height: 320, type: 'donut' },
+      series: [this.totalActiveUsers, this.totalInactiveUsers],
+      labels: ['Active', 'InActive'],
+      colors: ['#2ab57d', '#5156be'],
+      legend: {
+        show: !0,
+        position: 'bottom',
+        horizontalAlign: 'center',
+        verticalAlign: 'middle',
+        floating: !1,
+        fontSize: '14px',
+        offsetX: 0,
+      },
+      responsive: [
+        {
+          breakpoint: 600,
+          options: { chart: { height: 240 }, legend: { show: !1 } },
+        },
+      ],
+    };
+    return donutChart;
   }
 }

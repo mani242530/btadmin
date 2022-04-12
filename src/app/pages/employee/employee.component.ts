@@ -6,7 +6,6 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Company } from 'src/app/core/models/companys';
 import { Employees } from 'src/app/core/models/employees';
 
 @Component({
