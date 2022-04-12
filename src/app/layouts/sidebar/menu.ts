@@ -29,7 +29,7 @@ export const MENU: MenuItem[] = [
     id: 5,
     label: 'MENUITEMS.UPDATES.TEXT',
     icon: 'grid',
-    link: '/',
+    link: '/updates',
   },
   {
     id: 6,

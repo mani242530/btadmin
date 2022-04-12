@@ -49,6 +49,12 @@ export const MENU: MenuItem[] = [
     icon: 'gift',
     link: '/advertise',
   },
+  {
+    id: 8,
+    label: 'MENUITEMS.UPDATES.TEXT',
+    icon: 'gift',
+    link: '/updates',
+  },
   // {
   //     id: 2,
   //     label: 'MENUITEMS.ELEMENTS.TEXT',

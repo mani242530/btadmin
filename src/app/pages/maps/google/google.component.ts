@@ -1,18 +1,24 @@
-import { Component, OnInit, ViewChild, Input, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Input,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-google',
   templateUrl: './google.component.html',
-  styleUrls: ['./google.component.scss']
+  styleUrls: ['./google.component.scss'],
 })
 
 /**
  * Google Component
  */
 export class GoogleComponent implements OnInit {
-
   // bread crumb items
   breadCrumbItems!: Array<{}>;
 
@@ -21,7 +27,10 @@ export class GoogleComponent implements OnInit {
   markers: any;
   zoom: number = 15;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private mapsAPILoader: MapsAPILoader) { }
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private mapsAPILoader: MapsAPILoader
+  ) {}
 
   ngOnInit(): void {
     /**
@@ -29,7 +38,7 @@ export class GoogleComponent implements OnInit {
      */
     this.breadCrumbItems = [
       { label: 'Maps' },
-      { label: 'Google Maps', active: true }
+      { label: 'Google Maps', active: true },
     ];
 
     if (isPlatformBrowser(this.platformId)) {
@@ -38,5 +47,4 @@ export class GoogleComponent implements OnInit {
       });
     }
   }
-
 }

@@ -19,6 +19,7 @@ import { ChartModule } from './chart/chart.module';
 import { ComponentsModule } from './components/components.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EmployeeModule } from './employee/employee.module';
+import { UpdatesModule } from './updates/updates.module';
 import { ExtendedModule } from './extended/extended.module';
 import { ExtraspagesModule } from './extraspages/extraspages.module';
 import { FormModule } from './form/form.module';
@@ -53,7 +54,8 @@ import { TablesModule } from './tables/tables.module';
     NgxSpinnerModule,
     EmployeeModule,
     SmsModule,
-    AdvertiseModule
+    AdvertiseModule,
+    UpdatesModule,
   ],
 })
 export class PagesModule {}

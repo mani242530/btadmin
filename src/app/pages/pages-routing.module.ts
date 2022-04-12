@@ -53,7 +53,8 @@ const routes: Routes = [
   },
   {
     path: 'advertise',
-    loadChildren: () => import('./advertise/advertise.module').then((m) => m.AdvertiseModule),
+    loadChildren: () =>
+      import('./advertise/advertise.module').then((m) => m.AdvertiseModule),
   },
   {
     path: 'employee',
@@ -63,6 +64,11 @@ const routes: Routes = [
   {
     path: 'sms',
     loadChildren: () => import('./sms/sms.module').then((m) => m.SmsModule),
+  },
+  {
+    path: 'updates',
+    loadChildren: () =>
+      import('./updates/updates.module').then((m) => m.UpdatesModule),
   },
 ];
 

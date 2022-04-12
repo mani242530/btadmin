@@ -9,16 +9,13 @@ import { Injectable } from '@angular/core';
 export class TextLocalSmsService {
   constructor(private __httpClient: HttpClient) {}
 
-  async callApi(URL: any, BODY: any) {
-    var options = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache',
-      },
-      json: true,
-    };
+  async callApi(data: any) {
+    const textUrl = `${data.url}apikey=${data.apikey}&numbers=${data.numbers}&sender=${data.sender}&message=${data.message}`;
+    // const textUrl =
+    //   'https://api.textlocal.in/send/?apikey=NzQzMjcxNzE2Mjc3NjQ3YTMzMzk2YTUxNTg0ODM3NGI=&numbers=9986968800&sender=TXTLCL&message=' +
+    //   encodeURIComponent('OTP to login to app is 123456');
 
-    let response = await this.__httpClient.post<any>(URL, options).subscribe({
+    let response = await this.__httpClient.get<any>(textUrl).subscribe({
       next: (result: any) => {
         console.log(`SMS API: ${URL} RESULT =`, result);
         return result;
@@ -32,18 +29,18 @@ export class TextLocalSmsService {
   }
 
   async sendSMS(toNumbers: any[], rawMessage: string | number | boolean) {
-    let url = 'http://api.textlocal.in/send/?';
+    
 
-    let sender = encodeURIComponent('BHARAT TRANSPORT');
+    let sender = encodeURIComponent('BHARATTRANSPORT');
     let encoded_message = encodeURIComponent(rawMessage);
-    let body = {
-      hash: '9e5b68225145bdcda8965fca245c0cd49a743099aa89da430fd5d7acd1cc9a12',
+    let data = {
+      url: 'https://api.textlocal.in/send/?',
       apikey: 'NzQzMjcxNzE2Mjc3NjQ3YTMzMzk2YTUxNTg0ODM3NGI=',
       numbers: toNumbers.join(','),
       sender: sender,
       message: encoded_message,
     };
-    let result = await this.callApi(url, body);
+    let result = await this.callApi(data);
     return result;
   }
 }
