@@ -61,6 +61,13 @@ export class DashboardComponent implements OnInit {
   totalDriverOwner = 0;
   totalActiveUsers = 0;
   totalInactiveUsers = 0;
+  totalDriver = 0;
+  totalOwner = 0;
+  totalFrieghtForwarder = 0;
+  totalPaidUsers999 = 0;
+  totalPaidUsers99 = 0;
+  totalNotPaidUsers = 0;
+  totalPaidUsers = 0;
 
   company: any;
   getCompanys!: Observable<any>;
@@ -190,8 +197,15 @@ export class DashboardComponent implements OnInit {
         if (snapshot.length === 0) {
           this.totalRegisteredUsers = 0;
           this.totalSupplier = 0;
-          this.totalDriverOwner = 0;
+          this.totalBooking = 0;
+          this.totalDriver = 0;
+          this.totalOwner = 0;
+          this.totalFrieghtForwarder = 0;
           this.totalInactiveUsers = 0;
+          this.totalActiveUsers = 0;
+          this.totalPaidUsers999 = 0;
+          this.totalPaidUsers99 = 0;
+          this.totalNotPaidUsers = 0;
         } else {
           this.totalRegisteredUsers = snapshot.length;
 
@@ -203,9 +217,16 @@ export class DashboardComponent implements OnInit {
             (obj: any) => obj.firmActivity === 'Booking'
           ).length;
 
-          this.totalDriverOwner = snapshot.filter(
-            (obj: any) =>
-              obj.firmActivity === 'Driver' || obj.firmActivity === 'Owner'
+          this.totalFrieghtForwarder = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Frieght Forwarder'
+          ).length;
+
+          this.totalDriver = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Driver'
+          ).length;
+
+          this.totalOwner = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Owner'
           ).length;
 
           this.totalActiveUsers = snapshot.filter(
@@ -214,6 +235,22 @@ export class DashboardComponent implements OnInit {
 
           this.totalInactiveUsers = snapshot.filter(
             (obj: any) => obj.accountStatus === 'Inactive'
+          ).length;
+
+          this.totalPaidUsers999 = snapshot.filter(
+            (obj: any) => obj.firmActivity !== 'Driver'
+          ).length;
+
+          this.totalPaidUsers99 = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Driver'
+          ).length;
+
+          this.totalNotPaidUsers = snapshot.filter(
+            (obj: any) => obj.paymentStatus === 'Not Paid'
+          ).length;
+
+          this.totalPaidUsers = snapshot.filter(
+            (obj: any) => obj.paymentStatus === 'Paid'
           ).length;
 
           this.simplePieChart = this.firmActivityChart();
@@ -231,9 +268,15 @@ export class DashboardComponent implements OnInit {
   firmActivityChart() {
     const simplePieChart: ChartType = {
       chart: { height: 320, type: 'pie' },
-      series: [this.totalBooking, this.totalSupplier],
-      labels: ['Booking', 'Supplier'],
-      colors: ['#2ab57d', '#5156be'],
+      series: [
+        this.totalBooking,
+        this.totalSupplier,
+        this.totalDriver,
+        this.totalOwner,
+        this.totalFrieghtForwarder,
+      ],
+      labels: ['Booking', 'Supplier', 'Driver', 'Owner', 'FF'],
+      colors: ['#2ab57d', '#5156be', '#fd625e', '#ffbf53', '#a6ef4b'],
       legend: {
         show: !0,
         position: 'bottom',
@@ -260,7 +303,7 @@ export class DashboardComponent implements OnInit {
       chart: { height: 320, type: 'donut' },
       series: [this.totalActiveUsers, this.totalInactiveUsers],
       labels: ['Active', 'InActive'],
-      colors: ['#2ab57d', '#5156be'],
+      colors: ['#2ab57d', '#fd625e'],
       legend: {
         show: !0,
         position: 'bottom',

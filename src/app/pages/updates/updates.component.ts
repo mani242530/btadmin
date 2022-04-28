@@ -608,4 +608,22 @@ export class UpdatesComponent implements OnInit {
   close(alert: AlertColor, alertData: AlertColor[]) {
     alertData.splice(alertData.indexOf(alert), 1);
   }
+  deleteData() {
+    console.log('delete');
+    try {
+      console.log(this.docid);
+      this.fbstore
+        .doc('companys/' + this.docid)
+        .delete()
+        .then((data) => {
+          console.log('Data deleted Successfully');
+
+          this.showUpdateForm = false;
+          this.updatesForm.reset();
+          this.searchForm.reset();
+        });
+    } catch (error) {
+      console.error('Error removing document: ', error);
+    }
+  }
 }

@@ -1,0 +1,59 @@
+<!-- start page title -->
+<app-pagetitle
+  title="Bootstrap Basic"
+  [breadcrumbItems]="breadCrumbItems"
+></app-pagetitle>
+<!-- end page title -->
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Employee List</h4>
+        <p class="card-title-desc">
+          Use one of two modifier classes to make <code>&lt;thead&gt;</code>s
+          appear light or dark gray.
+          <a
+            routerLink="/employee"
+            style="font-size: 14px; font-weight: bold; float: right"
+            >Add Employee</a
+          >
+        </p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>City</th>
+                <th>Mobile Number</th>
+                <th>Email Id</th>
+                <th>Joining Date</th>
+                <th>Role</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let table of totalEmployees; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ table.fullName }}</td>
+                <td>{{ table.city }}</td>
+                <td>{{ table.mobileNumber }}</td>
+                <td>{{ table.email }}</td>
+                <td>{{ table.joiningDate }}</td>
+                <td>{{ table.role }}</td>
+                <td>{{ table.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->

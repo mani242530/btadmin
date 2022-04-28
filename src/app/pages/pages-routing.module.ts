@@ -70,6 +70,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./updates/updates.module').then((m) => m.UpdatesModule),
   },
+  {
+    path: 'employee-list',
+    loadChildren: () =>
+      import('./employee-list/employee-list.module').then(
+        (m) => m.EmployeeListModule
+      ),
+  },
 ];
 
 @NgModule({

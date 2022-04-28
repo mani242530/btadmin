@@ -13,6 +13,11 @@
         <p class="card-title-desc">
           Provide valuable, actionable feedback to your users with HTML5 form
           validation–available in all our supported browsers.
+          <a
+            routerLink="/employee-list"
+            style="font-size: 14px; font-weight: bold; float: right"
+            >Employee List</a
+          >
         </p>
       </div>
       <div class="card-body">
@@ -21,6 +26,8 @@
           (ngSubmit)="validSubmit()"
           [formGroup]="employeeForm"
         >
+          <h4 class="card-title" style="color: #5156be">Personal Details</h4>
+          <hr />
           <div class="row">
             <div class="col-md-6">
               <div class="mb-3">
@@ -31,12 +38,16 @@
                   id="validationCustom01"
                   formControlName="firstName"
                   placeholder="First name"
-                  [ngClass]="{ 'is-valid': submit && form.firstName.errors }"
+                  [ngClass]="{ 'is-invalid': submit && form.firstName.errors }"
                 />
                 <div
                   *ngIf="submit && form.firstName?.errors"
-                  class="valid-feedback"
-                ></div>
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.firstName.errors?.required"
+                    >Please provide a first name.</span
+                  >
+                </div>
               </div>
             </div>
             <div class="col-md-6">
@@ -48,17 +59,42 @@
                   id="validationCustom02"
                   formControlName="lastName"
                   placeholder="Last name"
-                  [ngClass]="{ 'is-valid': submit && form.lastName.errors }"
+                  [ngClass]="{ 'is-invalid': submit && form.lastName.errors }"
                 />
                 <div
                   *ngIf="submit && form.lastName?.errors"
-                  class="valid-feedback"
-                ></div>
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.lastName.errors?.required"
+                    >Please provide a last name.</span
+                  >
+                </div>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="validationCustom03">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="address"
+                  placeholder="Address"
+                  [ngClass]="{ 'is-invalid': submit && form.address.errors }"
+                />
+                <div
+                  *ngIf="submit && form.address?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.address.errors?.required"
+                    >Please provide a valid address.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
               <div class="mb-3">
                 <label for="validationCustom03">City</label>
                 <input
@@ -79,7 +115,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="mb-3">
                 <label for="validationCustom04">State</label>
                 <input
@@ -100,7 +136,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="mb-3">
                 <label for="validationCustom05">Zip</label>
                 <input
@@ -117,6 +153,72 @@
                 >
                   <span *ngIf="form.zip.errors?.required"
                     >Please provide a valid zip.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom03">Date of Birth</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="dateOfBirth"
+                  placeholder="Date of Birth"
+                  [ngClass]="{
+                    'is-invalid': submit && form.dateOfBirth.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.dateOfBirth.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.dateOfBirth.errors?.required"
+                    >Please provide a valid date of birth.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select class="form-select" formControlName="gender">
+                  <option>Select</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+                <div
+                  *ngIf="submit && form.gender.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.gender.errors?.required"
+                    >Please provide a gender.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom04">Releationship with Emp.</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom04"
+                  formControlName="relationshipWithEmp"
+                  placeholder="Releationship with emp"
+                  [ngClass]="{
+                    'is-invalid': submit && form.relationshipWithEmp.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.relationshipWithEmp?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.relationshipWithEmp.errors?.required"
+                    >Please provide a valid relationship with emp.</span
                   >
                 </div>
               </div>
@@ -146,12 +248,11 @@
                 </div>
               </div>
             </div>
-
             <div class="col-md-4">
               <div class="mb-3">
                 <label for="validationCustom05">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   class="form-control"
                   id="validationCustom05"
                   formControlName="email"
@@ -170,21 +271,255 @@
             </div>
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom04">Reference Name</label>
+                <label for="validationCustom04">Emergency Contact Number</label>
                 <input
                   type="text"
                   class="form-control"
                   id="validationCustom04"
-                  formControlName="reference"
-                  placeholder="Reference Name"
-                  [ngClass]="{ 'is-invalid': submit && form.reference.errors }"
+                  formControlName="emergencyContactNumber"
+                  placeholder="Emergency contact number"
+                  [ngClass]="{
+                    'is-invalid': submit && form.emergencyContactNumber.errors
+                  }"
                 />
                 <div
-                  *ngIf="submit && form.reference?.errors"
+                  *ngIf="submit && form.emergencyContactNumber?.errors"
                   class="invalid-feedback"
                 >
-                  <span *ngIf="form.reference.errors?.required"
-                    >Please provide a valid reference name.</span
+                  <span *ngIf="form.emergencyContactNumber.errors?.required"
+                    >Please provide a valid emergency conatct number.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <h4 class="card-title" style="color: #5156be">Bank Details</h4>
+          <hr />
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom03">Bank Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="bankName"
+                  placeholder="Bank Name"
+                  [ngClass]="{ 'is-invalid': submit && form.bankName.errors }"
+                />
+                <div
+                  *ngIf="submit && form.bankName?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.bankName.errors?.required"
+                    >Please provide a valid bank name.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom03">Account Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="accountNumber"
+                  placeholder="City"
+                  [ngClass]="{
+                    'is-invalid': submit && form.accountNumber.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.accountNumber?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.accountNumber.errors?.required"
+                    >Please provide a valid account number.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom04">IFSC Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom04"
+                  formControlName="ifscCode"
+                  placeholder="State"
+                  [ngClass]="{ 'is-invalid': submit && form.ifscCode.errors }"
+                />
+                <div
+                  *ngIf="submit && form.ifscCode?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.ifscCode.errors?.required"
+                    >Please provide a valid ifsc code.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <h4 class="card-title" style="color: #5156be">
+            Employeement Details
+          </h4>
+          <hr />
+          <div class="row">
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="validationCustom03">Status</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="status"
+                  placeholder="Status"
+                  [ngClass]="{ 'is-invalid': submit && form.status.errors }"
+                />
+                <div
+                  *ngIf="submit && form.status?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.status.errors?.required"
+                    >Please provide a valid status.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="validationCustom03">Joining Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="joiningDate"
+                  placeholder="Joining Date"
+                  [ngClass]="{
+                    'is-invalid': submit && form.joiningDate.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.joiningDate?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.joiningDate.errors?.required"
+                    >Please provide a valid joining date.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="validationCustom04">Last Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="validationCustom04"
+                  formControlName="lastDate"
+                  placeholder="Last Date"
+                  [ngClass]="{ 'is-invalid': submit && form.lastDate.errors }"
+                />
+                <div
+                  *ngIf="submit && form.lastDate?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.lastDate.errors?.required"
+                    >Please provide a valid last date.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="validationCustom04">Role</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom04"
+                  formControlName="role"
+                  placeholder="Role"
+                  [ngClass]="{ 'is-invalid': submit && form.role.errors }"
+                />
+                <div
+                  *ngIf="submit && form.role?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.role.errors?.required"
+                    >Please provide a valid role.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom03">Responsibility</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="responsibility"
+                  placeholder="Responsibility"
+                  [ngClass]="{
+                    'is-invalid': submit && form.responsibility.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.responsibility?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.responsibility.errors?.required"
+                    >Please provide a valid responsibility.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom03">Leave Total</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="leaveTotal"
+                  placeholder="Leave Total"
+                  [ngClass]="{
+                    'is-invalid': submit && form.leaveTotal.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.leaveTotal?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.joiningDate.errors?.required"
+                    >Please provide a valid leave total.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom04">Remaining Leaves Date</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="validationCustom04"
+                  formControlName="remainingLeaves"
+                  placeholder="Remaining Leaves"
+                  [ngClass]="{
+                    'is-invalid': submit && form.remainingLeaves.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.remainingLeaves?.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.remainingLeaves.errors?.required"
+                    >Please provide a valid remaining leaves.</span
                   >
                 </div>
               </div>

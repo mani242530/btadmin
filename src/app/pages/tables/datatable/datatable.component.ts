@@ -117,8 +117,7 @@ export class DatatableComponent implements OnInit {
         } else {
           this.service.tableDataSnapshot = snapshot;
           this.tableData = snapshot;
-          // console.log(this.tableData);
-          // this.totalData = snapshot.length;
+          this.totalData = snapshot.length;
         }
       });
     } catch (error) {

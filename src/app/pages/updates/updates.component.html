@@ -246,7 +246,7 @@
                   class="form-control"
                   id="validationCustom05"
                   formControlName="alternateMobileNumber"
-                  placeholder="VAlternate Mobile Number"
+                  placeholder="Alternate Mobile Number"
                   [ngClass]="{
                     'is-invalid': submit && form.alternateMobileNumber.errors
                   }"
@@ -338,6 +338,29 @@
                 </ng-select>
               </div>
             </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom05">Reference Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom05"
+                  formControlName="referenceName"
+                  placeholder="Reference Name"
+                  [ngClass]="{
+                    'is-invalid': submit && form.referenceName.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.referenceName.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.referenceName.errors?.required"
+                    >Please provide a valid reference name.</span
+                  >
+                </div>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -347,6 +370,14 @@
               (click)="onSubmitUpdate()"
             >
               Update form
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger waves-effect waves-light"
+              style="float: right"
+              (click)="deleteData()"
+            >
+              <i class="bx bx-block font-size-16 align-middle me-2"></i> Delete
             </button>
           </div>
         </form>

@@ -13,7 +13,7 @@
       <div class="card-body">
         <div class="row align-items-center">
           <div class="col-12">
-            <span class="text-muted mb-3 lh-1 d-block text-truncate"
+            <span class="text-muted mb-2 d-block text-truncate"
               >Registered User(s)</span
             >
             <h4 class="mb-3">
@@ -40,7 +40,7 @@
       <div class="card-body">
         <div class="row align-items-center">
           <div class="col-12">
-            <span class="text-muted mb-3 lh-1 d-block text-truncate"
+            <span class="text-muted mb-2 d-block text-truncate"
               >Supplier(s)</span
             >
             <h4 class="mb-3">
@@ -49,7 +49,7 @@
           </div>
         </div>
         <div class="text-nowrap">
-          <span class="badge bg-soft-danger text-danger">{{
+          <span class="badge bg-soft-success text-success">{{
             totalSupplier
           }}</span>
         </div>
@@ -67,11 +67,11 @@
       <div class="card-body">
         <div class="row align-items-center">
           <div class="col-12">
-            <span class="text-muted mb-3 lh-1 d-block text-truncate"
-              >Driver/Owner(s)</span
+            <span class="text-muted mb-2 d-block text-truncate"
+              >Booking(s)</span
             >
             <h4 class="mb-3">
-              <span class="counter-value">{{ totalDriverOwner }}</span>
+              <span class="counter-value">{{ totalBooking }}</span>
             </h4>
           </div>
         </div>
@@ -94,7 +94,114 @@
       <div class="card-body">
         <div class="row align-items-center">
           <div class="col-12">
-            <span class="text-muted mb-3 lh-1 d-block text-truncate"
+            <span class="text-muted mb-2 d-block text-truncate">Driver(s)</span>
+            <h4 class="mb-3">
+              <span class="counter-value">{{ totalDriver }}</span>
+            </h4>
+          </div>
+        </div>
+        <div class="text-nowrap">
+          <span class="badge bg-soft-success text-success">{{
+            totalDriver
+          }}</span>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row-->
+
+<div class="row">
+  <div class="col-xl-3 col-md-6">
+    <!-- card -->
+    <div class="card card-h-100">
+      <!-- card body -->
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <span class="text-muted mb-2 d-block text-truncate">Owners(s)</span>
+            <h4 class="mb-3">
+              <span class="counter-value">{{ totalOwner }}</span>
+            </h4>
+          </div>
+        </div>
+        <div class="text-nowrap">
+          <span class="badge bg-soft-success text-success">{{
+            totalOwner
+          }}</span>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+
+  <div class="col-xl-3 col-md-6">
+    <!-- card -->
+    <div class="card card-h-100">
+      <!-- card body -->
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <span class="text-muted mb-2 d-block text-truncate"
+              >Frieght Forwarder(s)</span
+            >
+            <h4 class="mb-3">
+              <span class="counter-value">{{ totalFrieghtForwarder }}</span>
+            </h4>
+          </div>
+        </div>
+        <div class="text-nowrap">
+          <span class="badge bg-soft-success text-success">{{
+            totalFrieghtForwarder
+          }}</span>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col-->
+
+  <div class="col-xl-3 col-md-6">
+    <!-- card -->
+    <div class="card card-h-100">
+      <!-- card body -->
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <span class="text-muted mb-2 d-block text-truncate"
+              >Active User(s)</span
+            >
+            <h4 class="mb-3">
+              <span class="counter-value">{{ totalActiveUsers }}</span>
+            </h4>
+          </div>
+        </div>
+        <div class="text-nowrap">
+          <span class="badge bg-soft-success text-success">{{
+            totalActiveUsers
+          }}</span>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+
+  <div class="col-xl-3 col-md-6">
+    <!-- card -->
+    <div class="card card-h-100">
+      <!-- card body -->
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <span class="text-muted mb-2 d-block text-truncate"
               >InActive User(s)</span
             >
             <h4 class="mb-3">
@@ -103,8 +210,119 @@
           </div>
         </div>
         <div class="text-nowrap">
-          <span class="badge bg-soft-success text-success">{{
+          <span class="badge bg-soft-danger text-danger">{{
             totalInactiveUsers
+          }}</span>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row-->
+
+<div class="row">
+  <div class="col-xl-3 col-md-6">
+    <!-- card -->
+    <div class="card card-h-100">
+      <!-- card body -->
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <span class="text-muted mb-2 d-block text-truncate"
+              >999 User(s)</span
+            >
+            <h4 class="mb-3">
+              <span class="counter-value">{{ totalPaidUsers999 }}</span>
+            </h4>
+          </div>
+        </div>
+        <div class="text-nowrap">
+          <span class="badge bg-soft-success text-success">{{
+            totalPaidUsers999
+          }}</span>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+
+  <div class="col-xl-3 col-md-6">
+    <!-- card -->
+    <div class="card card-h-100">
+      <!-- card body -->
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <span class="text-muted mb-2 d-block text-truncate"
+              >99 Users(s)</span
+            >
+            <h4 class="mb-3">
+              <span class="counter-value">{{ totalPaidUsers99 }}</span>
+            </h4>
+          </div>
+        </div>
+        <div class="text-nowrap">
+          <span class="badge bg-soft-success text-success">{{
+            totalPaidUsers99
+          }}</span>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col-->
+
+  <div class="col-xl-3 col-md-6">
+    <!-- card -->
+    <div class="card card-h-100">
+      <!-- card body -->
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <span class="text-muted mb-2 d-block text-truncate"
+              >Paid User(s)</span
+            >
+            <h4 class="mb-3">
+              <span class="counter-value">{{ totalPaidUsers }}</span>
+            </h4>
+          </div>
+        </div>
+        <div class="text-nowrap">
+          <span class="badge bg-soft-success text-success">{{
+            totalPaidUsers
+          }}</span>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+
+  <div class="col-xl-3 col-md-6">
+    <!-- card -->
+    <div class="card card-h-100">
+      <!-- card body -->
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <span class="text-muted mb-2 d-block text-truncate"
+              >Not Paid User(s)</span
+            >
+            <h4 class="mb-3">
+              <span class="counter-value">{{ totalNotPaidUsers }}</span>
+            </h4>
+          </div>
+        </div>
+        <div class="text-nowrap">
+          <span class="badge bg-soft-danger text-danger">{{
+            totalNotPaidUsers
           }}</span>
         </div>
       </div>
@@ -142,7 +360,7 @@
   <div class="col-xl-6">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title mb-0">Active InActive Users</h4>
+        <h4 class="card-title mb-0">Active / InActive Users</h4>
       </div>
       <div class="card-body">
         <apx-chart

@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Employees } from 'src/app/core/models/employees';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-employee',
@@ -36,7 +37,8 @@ export class EmployeeComponent implements OnInit {
 
   constructor(
     public formBuilder: FormBuilder,
-    private fbstore: AngularFirestore
+    private fbstore: AngularFirestore,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -57,15 +59,29 @@ export class EmployeeComponent implements OnInit {
         [Validators.required, Validators.pattern('[a-zA-Z0-9]+')],
       ],
       lastName: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
+      address: ['', [Validators.required]],
       city: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       state: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       zip: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       mobilenumber: ['', [Validators.required]],
       email: ['', [Validators.required]],
-      reference: [
+      dateOfBirth: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
+      emergencyContactNumber: ['', [Validators.required]],
+      relationshipWithEmp: [
         '',
         [Validators.required, Validators.pattern('[a-zA-Z0-9]+')],
       ],
+      bankName: ['', [Validators.required]],
+      accountNumber: ['', [Validators.required]],
+      ifscCode: ['', [Validators.required]],
+      status: ['', [Validators.required]],
+      joiningDate: ['', [Validators.required]],
+      lastDate: ['', [Validators.required]],
+      role: ['', [Validators.required]],
+      responsibility: ['', [Validators.required]],
+      leaveTotal: ['', [Validators.required]],
+      remainingLeaves: ['', [Validators.required]],
     });
 
     this.submit = false;
@@ -118,12 +134,27 @@ export class EmployeeComponent implements OnInit {
     const employeeObj: Employees = {
       firstName: this.employeeForm.get('firstName')!.value,
       lastName: this.employeeForm.get('lastName')!.value,
+      address: this.employeeForm.get('address')!.value,
       city: this.employeeForm.get('city')!.value,
       state: this.employeeForm.get('state')!.value,
       zip: this.employeeForm.get('zip')!.value,
       mobileNumber: '+91' + this.employeeForm.get('mobilenumber')!.value,
       email: this.employeeForm.get('email')!.value,
-      reference: this.employeeForm.get('reference')!.value,
+      dateOfBirth: this.employeeForm.get('dateOfBirth')!.value,
+      gender: this.employeeForm.get('gender')!.value,
+      emergencyContactNumber: this.employeeForm.get('emergencyContactNumber')!
+        .value,
+      relationshipWithEmp: this.employeeForm.get('relationshipWithEmp')!.value,
+      bankName: this.employeeForm.get('bankName')!.value,
+      accountNumber: this.employeeForm.get('accountNumber')!.value,
+      ifscCode: this.employeeForm.get('ifscCode')!.value,
+      status: this.employeeForm.get('status')!.value,
+      joiningDate: this.employeeForm.get('joiningDate')!.value,
+      lastDate: this.employeeForm.get('lastDate')!.value,
+      role: this.employeeForm.get('role')!.value,
+      responsibility: this.employeeForm.get('responsibility')!.value,
+      leaveTotal: this.employeeForm.get('leaveTotal')!.value,
+      remainingLeaves: this.employeeForm.get('remainingLeaves')!.value,
     };
     Object.keys(employeeObj).forEach((k) => {
       if (typeof [k as keyof Employees] !== 'object') {
@@ -157,14 +188,19 @@ export class EmployeeComponent implements OnInit {
             if (data) {
               this.employeeExists = false;
               console.log('Employee added in db');
+              // this.toastr.success(
+              //   'Employee Details saved successfully!',
+              //   'Good Job!'
+              // );
             }
           });
         } else {
           console.log('Employee found' + snapshot[0].id);
-
-          setTimeout(() => {
-            this.employeeExists = true;
-          }, 5000);
+          // this.toastr.error(
+          //   'Employee Details is avaibale in our db!',
+          //   'Please try again!'
+          // );
+          // this.employeeForm.reset();
         }
       });
     }
