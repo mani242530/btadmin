@@ -23,7 +23,6 @@
       <div class="card-body">
         <form
           class="needs-validation"
-          (ngSubmit)="validSubmit()"
           [formGroup]="employeeForm"
         >
           <h4 class="card-title" style="color: #5156be">Personal Details</h4>
@@ -186,7 +185,7 @@
               <div class="mb-3">
                 <label class="form-label">Gender</label>
                 <select class="form-select" formControlName="gender">
-                  <option>Select</option>
+                  <option selected>Select</option>
                   <option>Male</option>
                   <option>Female</option>
                 </select>
@@ -229,7 +228,7 @@
               <div class="mb-3">
                 <label for="validationCustom03">Mobile Number</label>
                 <input
-                  type="text"
+                  type="tel"
                   class="form-control"
                   id="validationCustom03"
                   formControlName="mobilenumber"
@@ -325,7 +324,7 @@
                   class="form-control"
                   id="validationCustom03"
                   formControlName="accountNumber"
-                  placeholder="City"
+                  placeholder="Account Number"
                   [ngClass]="{
                     'is-invalid': submit && form.accountNumber.errors
                   }"
@@ -348,7 +347,7 @@
                   class="form-control"
                   id="validationCustom04"
                   formControlName="ifscCode"
-                  placeholder="State"
+                  placeholder="IFSC Code"
                   [ngClass]="{ 'is-invalid': submit && form.ifscCode.errors }"
                 />
                 <div

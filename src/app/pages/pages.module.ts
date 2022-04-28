@@ -26,6 +26,9 @@ import { FormModule } from './form/form.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { SmsModule } from './sms/sms.module';
 import { TablesModule } from './tables/tables.module';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -34,6 +37,9 @@ import { TablesModule } from './tables/tables.module';
     WidgetModule,
     CountToModule,
     SharedModule,
+    NgSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
     NgApexchartsModule,
     PagesRoutingModule,
     SimplebarAngularModule,
@@ -56,6 +62,11 @@ import { TablesModule } from './tables/tables.module';
     SmsModule,
     AdvertiseModule,
     UpdatesModule,
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
+    }), // ToastrModule added
   ],
 })
 export class PagesModule {}

@@ -69,7 +69,6 @@
       <div class="card-body">
         <form
           class="needs-validation"
-          (ngSubmit)="onSubmitUpdate()"
           [formGroup]="updatesForm"
         >
           <div class="row">
@@ -381,17 +380,6 @@
             </button>
           </div>
         </form>
-        <div *ngIf="valueUpdated">
-          <div *ngFor="let color of alertData">
-            <ngb-alert
-              type="{{ color.color }}"
-              (close)="close(color, alertData)"
-              class="custom-alert"
-            >
-              A simple {{ color.color }} alert—check it out!
-            </ngb-alert>
-          </div>
-        </div>
       </div>
     </div>
     <!-- end card -->

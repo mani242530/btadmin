@@ -25,6 +25,7 @@ import { Company } from 'src/app/core/models/companys';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -63,15 +64,19 @@ export class DashboardComponent implements OnInit {
   totalInactiveUsers = 0;
   totalDriver = 0;
   totalOwner = 0;
-  totalFrieghtForwarder = 0;
+  totalFreightForwarders = 0;
   totalPaidUsers999 = 0;
   totalPaidUsers99 = 0;
   totalNotPaidUsers = 0;
   totalPaidUsers = 0;
-
+  filteredLocation!: Observable<any>;
+  locations: string[] = [];
+  selected = [];
   company: any;
   getCompanys!: Observable<any>;
   companysCollection!: AngularFirestoreCollection<Company>;
+  // Search form
+  locationSearchForm!: FormGroup;
 
   // Coin News Slider
   timelineCarousel: OwlOptions = {
@@ -133,10 +138,173 @@ export class DashboardComponent implements OnInit {
     }),
   ];
 
+  locationsArr = [
+    'All',
+    'Agartala',
+    'Agra',
+    'Ahmedabad',
+    'Ahmednagar',
+    'Ajmer',
+    'Akola',
+    'Aligarh',
+    'Alwar',
+    'Ambala',
+    'Amravati',
+    'Amritsar',
+    'Anand',
+    'Angol',
+    'Anjar',
+    'Ankleshwar',
+    'Asansol',
+    'Aurangabad',
+    'Baddi',
+    'Bangalore',
+    'Baramati',
+    'Beawar',
+    'Belgaon',
+    'Bellary',
+    'Betul',
+    'Bhavnagar',
+    'Bhilai',
+    'Bhilwada',
+    'Bhiwadi',
+    'Bhiwani',
+    'Bhopal',
+    'Bhubaneshwar',
+    'Bhuj',
+    'Bikaner',
+    'Bilaspur',
+    'Bokaro',
+    'Calicut',
+    'Chanderpur',
+    'Chandigarh',
+    'Chennai',
+    'Chhatral',
+    'Cochin',
+    'Coimbaotre',
+    'Cuttack',
+    'Darbhanga',
+    'Deharadun',
+    'Delhi',
+    'Dewas',
+    'Dhanbad',
+    'Dhule',
+    'Durgapur',
+    'Erode',
+    'Faridabad',
+    'Gandhidham',
+    'Ganjbasoda',
+    'Ghaziyabad',
+    'Goa',
+    'Gorakhpur',
+    'Guntur',
+    'Gurgaon',
+    'Guwahati',
+    'Gwalior',
+    'Haldwani',
+    'Haridwar',
+    'Himmatnagar',
+    'Hisar',
+    'Hospet',
+    'Hosur',
+    'Hubli',
+    'Hyderabad',
+    'Ichalkaranji',
+    'Indore',
+    'Jabalpur',
+    'Jaipur',
+    'Jalandhar',
+    'Jalgaon',
+    'Jalna',
+    'Jammu',
+    'Jamnagar',
+    'Jamshedpur',
+    'Kala Amb',
+    'Jhansi',
+    'Jodhpur',
+    'Kanpur',
+    'Karimnagar',
+    'Karnal',
+    'Kashipur',
+    'Katni',
+    'Kharagpur',
+    'Kolhapur',
+    'Koltaka',
+    'Korba',
+    'Kota',
+    'Lucknow',
+    'Ludhiana',
+    'Madurai',
+    'Mahsana',
+    'Mandi Gobindgarh',
+    'Meerut',
+    'Morbi',
+    'Multai',
+    'Mumbai',
+    'Muradabad',
+    'Muzaffarnagar',
+    'Muzaffarpur',
+    'Mysore',
+    'Nagpur',
+    'Namakkal',
+    'Nashik',
+    'Nasirabad',
+    'Neemuch',
+    'Noida',
+    'Panipat',
+    'Patna',
+    'Pithampur',
+    'Pondicherry',
+    'Prayagraj',
+    'Pune',
+    'Raichur',
+    'Raigarh',
+    'Raipur',
+    'Rajkot',
+    'Rajpura',
+    'Ramgarh',
+    'Ranchi',
+    'Ratlam',
+    'Rohtak',
+    'Rourkela',
+    'Rudrapur',
+    'Sagar',
+    'Saharanpur',
+    'Sangli',
+    'Satara',
+    'Selam',
+    'Shillong',
+    'Siliguri',
+    'Silvasa',
+    'Solapur',
+    'Srinagar',
+    'Surat',
+    'Thiruvananthapuram',
+    'Thrissur',
+    'Tinsukia',
+    'Tirupati',
+    'Udaipur',
+    'Ujjain',
+    'Umbergaon',
+    'Unjha',
+    'Vadodara',
+    'Vapi',
+    'Varanasi',
+    'Vidisha',
+    'Vijayawada',
+    'Vishakhapatnam',
+    'Warangal',
+    'Daman',
+    'Halol',
+    'Nizambad',
+    'Pan India',
+  ];
+
   constructor(
     private fbstore: AngularFirestore,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    public formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -152,6 +320,18 @@ export class DashboardComponent implements OnInit {
      * Fetches the data
      */
     this.fetchData();
+
+    this.locationSearchForm = this.formBuilder.group({
+      location: ['All', [Validators.required]],
+    });
+
+    /**
+     * Fetches the data
+     */
+    this.fetchData();
+    this.locations = this.locationsArr.sort((a, b) =>
+      a > b ? 1 : b > a ? -1 : 0
+    );
   }
 
   /**
@@ -200,7 +380,7 @@ export class DashboardComponent implements OnInit {
           this.totalBooking = 0;
           this.totalDriver = 0;
           this.totalOwner = 0;
-          this.totalFrieghtForwarder = 0;
+          this.totalFreightForwarders = 0;
           this.totalInactiveUsers = 0;
           this.totalActiveUsers = 0;
           this.totalPaidUsers999 = 0;
@@ -217,8 +397,8 @@ export class DashboardComponent implements OnInit {
             (obj: any) => obj.firmActivity === 'Booking'
           ).length;
 
-          this.totalFrieghtForwarder = snapshot.filter(
-            (obj: any) => obj.firmActivity === 'Frieght Forwarder'
+          this.totalFreightForwarders = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Frieght Forwarders'
           ).length;
 
           this.totalDriver = snapshot.filter(
@@ -273,9 +453,9 @@ export class DashboardComponent implements OnInit {
         this.totalSupplier,
         this.totalDriver,
         this.totalOwner,
-        this.totalFrieghtForwarder,
+        this.totalFreightForwarders,
       ],
-      labels: ['Booking', 'Supplier', 'Driver', 'Owner', 'FF'],
+      labels: ['Booking', 'Supplier', 'Driver', 'Owner', 'Freight Forwarders'],
       colors: ['#2ab57d', '#5156be', '#fd625e', '#ffbf53', '#a6ef4b'],
       legend: {
         show: !0,
@@ -321,5 +501,68 @@ export class DashboardComponent implements OnInit {
       ],
     };
     return donutChart;
+  }
+  /**
+   * Fetches Location chart
+   */
+  getValues() {
+    console.log(this.locationSearchForm.get('location')!.value);
+
+    const selectedLocation = this.locationSearchForm.get('location')!.value;
+    if (selectedLocation.length > 0) {
+      this.companysCollection = this.fbstore.collection('companys', (ref) =>
+        ref.where('location', '==', selectedLocation)
+      );
+      this.filteredLocation = this.companysCollection.snapshotChanges().pipe(
+        map((actions) => {
+          return actions.map((action) => {
+            const data = action.payload.doc.data() as Company;
+            return {
+              id: action.payload.doc.id,
+              companyName: data['companyName'],
+              ownerName: data['ownerName'],
+              firmActivity: data['firmActivity'],
+              vehicleType: data['vehicleType'],
+              mobileNumber: data['mobileNumber'],
+              alternateMobileNumber: data['alternateMobileNumber'],
+              location: data['location'],
+              serviceProvidedLocation: data['serviceProvidedLocation'],
+              referenceName: data['referenceName'],
+              vehicleNos: data['vehicleNos'],
+              aadharNumber: data['aadharNumber'],
+              drivingLicenseNumber: data['drivingLicenseNumber'],
+              paymentStatus: data['paymentStatus'],
+              accountStatus: data['accountStatus'],
+              language: data['language'],
+            };
+          });
+        })
+      );
+
+      this.filteredLocation.subscribe((snapshot) => {
+        if (snapshot.length === 0) {
+          console.log('User NOT found');
+        } else {
+          console.log(snapshot[0]);
+          console.log('User found in db' + snapshot[0].id);
+          this.totalBooking = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Booking'
+          ).length;
+          this.totalSupplier = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Supplier'
+          ).length;
+          this.totalDriver = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Driver'
+          ).length;
+          this.totalOwner = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Owner'
+          ).length;
+          this.totalFreightForwarders = snapshot.filter(
+            (obj: any) => obj.firmActivity === 'Freight Forwarders'
+          ).length;
+          this.simplePieChart = this.firmActivityChart();
+        }
+      });
+    }
   }
 }

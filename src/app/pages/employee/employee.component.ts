@@ -77,7 +77,7 @@ export class EmployeeComponent implements OnInit {
       ifscCode: ['', [Validators.required]],
       status: ['', [Validators.required]],
       joiningDate: ['', [Validators.required]],
-      lastDate: ['', [Validators.required]],
+      lastDate: [''],
       role: ['', [Validators.required]],
       responsibility: ['', [Validators.required]],
       leaveTotal: ['', [Validators.required]],
@@ -187,20 +187,20 @@ export class EmployeeComponent implements OnInit {
           this.employeesNewCollection.add(employeeObj).then((data) => {
             if (data) {
               this.employeeExists = false;
+              this.submitted = false;
               console.log('Employee added in db');
-              // this.toastr.success(
-              //   'Employee Details saved successfully!',
-              //   'Good Job!'
-              // );
+              this.toastr.success(
+                'Employee saved successfully in db!',
+                'Great Job!'
+              );
             }
           });
         } else {
           console.log('Employee found' + snapshot[0].id);
           // this.toastr.error(
-          //   'Employee Details is avaibale in our db!',
-          //   'Please try again!'
+          //   'Employee is avaibale in our db!',
+          //   'Employee Already Exists!'
           // );
-          // this.employeeForm.reset();
         }
       });
     }

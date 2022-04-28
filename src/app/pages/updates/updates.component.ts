@@ -9,6 +9,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Company } from 'src/app/core/models/companys';
@@ -44,6 +45,7 @@ export class UpdatesComponent implements OnInit {
   checkFirmActivityIsDriver = false;
   checkFirmActivityIsOwner = false;
   showUpdateForm = false;
+  updatedValue = true;
 
   CountryCode: any = '+91';
   filteredUser!: Observable<any>;
@@ -302,7 +304,8 @@ export class UpdatesComponent implements OnInit {
 
   constructor(
     public formBuilder: FormBuilder,
-    private fbstore: AngularFirestore
+    private fbstore: AngularFirestore,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -423,12 +426,10 @@ export class UpdatesComponent implements OnInit {
       );
 
       this.filteredUser.subscribe((snapshot) => {
-        if (snapshot.length === 0) {
-          this.showUpdateForm = false;
-          console.log('User NOT found');
-        } else {
+        if (snapshot.length > 0 && !this.updatedValue) {
           console.log(snapshot[0]);
           console.log('User found in db' + snapshot[0].id);
+          console.log('repeat');
           this.onFirmActivityValue(snapshot[0]);
           this.docid = snapshot[0].id;
           this.showUpdateForm = true;
@@ -477,6 +478,12 @@ export class UpdatesComponent implements OnInit {
           this.updatesForm.controls['accountStatus'].setValue(
             snapshot[0]['accountStatus']
           );
+        } else {
+          if (!this.updatedValue) {
+            this.showUpdateForm = false;
+            console.log('User NOT found');
+            this.toastr.error('User not registered in db!', 'NOT FOUND!');
+          }
         }
       });
     }
@@ -536,7 +543,9 @@ export class UpdatesComponent implements OnInit {
    */
   onSubmitSearch(value: { mobileNumber: any }) {
     this.submitted = true;
+    console.log(value);
     console.log('search');
+    this.updatedValue = false;
     this.getCompanysData(value);
     // stop here if form is invalid
     if (this.searchForm.invalid) {
@@ -586,14 +595,23 @@ export class UpdatesComponent implements OnInit {
         .ref.update(companyobj)
         .then((data) => {
           console.log(data);
-
+          this.toastr.success('Updated successfully in db!', 'Great Job!');
           this.showUpdateForm = false;
-          this.valueUpdated = true;
+          this.submitted = false;
+          this.updatedValue = true;
           this.updatesForm.reset();
           this.searchForm.reset();
         });
     } catch (error) {
       console.log(error);
+      this.toastr.success(
+        'Updated is not done in db!',
+        'Something went wrong!'
+      );
+      this.showUpdateForm = false;
+      this.submitted = false;
+      this.updatesForm.reset();
+      this.searchForm.reset();
     }
   }
 
@@ -617,13 +635,14 @@ export class UpdatesComponent implements OnInit {
         .delete()
         .then((data) => {
           console.log('Data deleted Successfully');
-
+          this.toastr.success('Deleted successfully in db!', 'Great Job!');
           this.showUpdateForm = false;
           this.updatesForm.reset();
           this.searchForm.reset();
         });
     } catch (error) {
       console.error('Error removing document: ', error);
+      this.toastr.success('Delete is not done in db!', 'Something went wrong!');
     }
   }
 }
