@@ -327,7 +327,6 @@ export class UpdatesComponent implements OnInit {
       ],
     });
     this.initializeModifyForm();
-    this._fetchData();
     this.submit = false;
     this.formsubmit = false;
 
@@ -387,6 +386,7 @@ export class UpdatesComponent implements OnInit {
       ],
       paymentStatus: ['', [Validators.required]],
       accountStatus: ['', [Validators.required]],
+      passwordPin: ['', [Validators.required]],
     });
   }
   /**
@@ -420,6 +420,7 @@ export class UpdatesComponent implements OnInit {
               paymentStatus: data['paymentStatus'],
               accountStatus: data['accountStatus'],
               language: data['language'],
+              passwordPin: data['passwordPin'],
             };
           });
         })
@@ -477,6 +478,9 @@ export class UpdatesComponent implements OnInit {
           );
           this.updatesForm.controls['accountStatus'].setValue(
             snapshot[0]['accountStatus']
+          );
+          this.updatesForm.controls['passwordPin'].setValue(
+            snapshot[0]['passwordPin']
           );
         } else {
           if (!this.updatedValue) {
@@ -560,10 +564,6 @@ export class UpdatesComponent implements OnInit {
     this.submitted = true;
     console.log('update');
     this.doModify();
-    // stop here if form is invalid
-    if (this.updatesForm.invalid) {
-      return;
-    }
   }
   /**
    * On submit updates form
@@ -587,45 +587,45 @@ export class UpdatesComponent implements OnInit {
       drivingLicenseNumber: this.updatesForm.get('drivingLicenseNumber')!.value,
       paymentStatus: this.updatesForm.get('paymentStatus')!.value,
       accountStatus: this.updatesForm.get('accountStatus')!.value,
+      passwordPin: this.updatesForm.get('passwordPin')!.value,
     };
-    try {
-      console.log(this.docid);
-      this.fbstore
-        .doc('companys/' + this.docid)
-        .ref.update(companyobj)
-        .then((data) => {
-          console.log(data);
-          this.toastr.success('Updated successfully in db!', 'Great Job!');
-          this.showUpdateForm = false;
-          this.submitted = false;
-          this.updatedValue = true;
-          this.updatesForm.reset();
-          this.searchForm.reset();
-        });
-    } catch (error) {
-      console.log(error);
-      this.toastr.success(
-        'Updated is not done in db!',
-        'Something went wrong!'
-      );
-      this.showUpdateForm = false;
-      this.submitted = false;
-      this.updatesForm.reset();
-      this.searchForm.reset();
-    }
+    let doc = this.fbstore.collection('companys', (ref) =>
+      ref.where(
+        'mobileNumber',
+        '==',
+        this.updatesForm.get('mobileNumber')!.value
+      )
+    );
+    doc
+      .snapshotChanges()
+      .pipe(
+        map((actions) =>
+          actions.map((a) => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { id };
+          })
+        )
+      )
+      .subscribe((_doc: any) => {
+        let id = _doc[0].id; //first result of query [0]
+        this.fbstore
+          .doc(`companys/${this.docid}`)
+          .update(companyobj)
+          .then((data) => {
+            console.log(data);
+            // eslint-disable-next-line no-redeclare
+            this.toastr.success('Updated successfully in db!', 'Great Job!');
+            this.showUpdateForm = false;
+            this.submitted = false;
+            this.updatedValue = true;
+            this.updatesForm.reset();
+            this.searchForm.reset();
+          });
+      });
   }
-
-  /***
-   * Notification Data Get
+  /* Delete Data remove
    */
-  private _fetchData() {
-    this.alertDataArr = this.alertData;
-  }
-  /* Notification remove
-   */
-  close(alert: AlertColor, alertData: AlertColor[]) {
-    alertData.splice(alertData.indexOf(alert), 1);
-  }
   deleteData() {
     console.log('delete');
     try {
@@ -642,7 +642,7 @@ export class UpdatesComponent implements OnInit {
         });
     } catch (error) {
       console.error('Error removing document: ', error);
-      this.toastr.success('Delete is not done in db!', 'Something went wrong!');
+      // this.toastr.success('Delete is not done in db!', 'Something went wrong!');
     }
   }
 }

@@ -67,10 +67,7 @@
         </p>
       </div>
       <div class="card-body">
-        <form
-          class="needs-validation"
-          [formGroup]="updatesForm"
-        >
+        <form class="needs-validation" [formGroup]="updatesForm">
           <div class="row">
             <div class="col-md-4">
               <div class="mb-3">
@@ -356,6 +353,32 @@
                 >
                   <span *ngIf="form.referenceName.errors?.required"
                     >Please provide a valid reference name.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="validationCustom03">Password Pin</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="passwordPin"
+                  placeholder="Password Pin"
+                  [ngClass]="{
+                    'is-invalid': submit && form.passwordPin.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.passwordPin.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.passwordPin.errors?.required"
+                    >Please provide a valid password pin.</span
                   >
                 </div>
               </div>
