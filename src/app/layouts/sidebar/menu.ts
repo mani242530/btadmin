@@ -22,7 +22,7 @@ export const MENU: MenuItem[] = [
     id: 4,
     label: 'MENUITEMS.USERS_LIST.TEXT',
     icon: 'sliders',
-    link: '/tables/datatable',
+    link: '/users',
     parentId: 67,
   },
   {

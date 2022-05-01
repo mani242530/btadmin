@@ -1,4 +1,4 @@
-import { SortColumn, SortDirection } from './datatable-sortable.directive';
+import { SortColumn, SortDirection } from './users-sortable.directive';
 
 export interface State {
   page: number;

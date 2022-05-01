@@ -30,6 +30,8 @@
                   [ngClass]="{
                     'is-valid': submit && form.mobileNumber?.errors
                   }"
+                  maxlength="10"
+                  minlength="10"
                 />
                 <div
                   *ngIf="submit && form.mobileNumber.errors"
@@ -76,6 +78,7 @@
                   [items]="firmActivitys"
                   bindLabel="name"
                   formControlName="firmActivity"
+                  (change)="onFirmActivityChange($event)"
                 >
                   <ng-template ng-optgroup-tmp let-item="item">
                     {{ item || "Unnamed group" }}
@@ -83,7 +86,7 @@
                 </ng-select>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" *ngIf="!checkFirmActivityIsDriver">
               <div class="mb-3">
                 <label for="validationCustom02">Company name</label>
                 <input
@@ -138,13 +141,17 @@
                 </ng-select>
               </div>
             </div>
-            <div class="col-md-4">
+            <label for="validationCustom05">Service Provided Location</label>
+            <div
+              class="col-md-4"
+              *ngIf="
+                selectedFirmActivity === 'Freight Forwarders';
+                else other_service_locations
+              "
+            >
               <div class="mb-3">
-                <label for="validationCustom05"
-                  >Service Provided Location</label
-                >
                 <ng-select
-                  [items]="serviceProvidedLocations"
+                  [items]="panIndiaLocations"
                   [multiple]="true"
                   bindLabel="name"
                   formControlName="serviceProvidedLocation"
@@ -155,8 +162,22 @@
                 </ng-select>
               </div>
             </div>
+
+            <ng-template #other_service_locations class="mb-3">
+              <ng-select
+                [items]="serviceProvidedLocations"
+                [multiple]="true"
+                bindLabel="name"
+                formControlName="serviceProvidedLocation"
+              >
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{ item || "Unnamed group" }}
+                </ng-template>
+              </ng-select>
+            </ng-template>
+
             <div class="col-md-4">
-              <div class="mb-3">
+              <div class="mb-3 mt-3">
                 <label for="validationCustom03">Vehicle Type</label>
                 <ng-select
                   [items]="vehicleTypes"
@@ -220,6 +241,8 @@
                   [ngClass]="{
                     'is-invalid': submit && form.mobileNumber.errors
                   }"
+                  maxlength="10"
+                  minlength="10"
                 />
                 <div
                   *ngIf="submit && form.mobileNumber.errors"
@@ -246,6 +269,8 @@
                   [ngClass]="{
                     'is-invalid': submit && form.alternateMobileNumber.errors
                   }"
+                  maxlength="10"
+                  minlength="10"
                 />
                 <div
                   *ngIf="submit && form.alternateMobileNumber.errors"
@@ -269,6 +294,8 @@
                   [ngClass]="{
                     'is-invalid': submit && form.aadharNumber.errors
                   }"
+                  maxlength="12"
+                  minlength="12"
                 />
                 <div
                   *ngIf="submit && form.aadharNumber?.errors"
@@ -292,6 +319,8 @@
                   [ngClass]="{
                     'is-invalid': submit && form.drivingLicenseNumber.errors
                   }"
+                  maxlength="16"
+                  minlength="16"
                 />
                 <div
                   *ngIf="submit && form.drivingLicenseNumber.errors"
@@ -372,6 +401,8 @@
                   [ngClass]="{
                     'is-invalid': submit && form.passwordPin.errors
                   }"
+                  maxlength="4"
+                  minlength="4"
                 />
                 <div
                   *ngIf="submit && form.passwordPin.errors"
@@ -390,6 +421,7 @@
               class="btn btn-primary"
               type="submit"
               (click)="onSubmitUpdate()"
+              [disabled]="!updatesForm.valid"
             >
               Update form
             </button>
@@ -409,3 +441,10 @@
   </div>
   <!-- end col -->
 </div>
+
+<ngx-spinner
+  type="ball-clip-rotate"
+  [fullScreen]="true"
+  size="medium"
+  color="#ffffff"
+></ngx-spinner>

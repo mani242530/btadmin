@@ -16,6 +16,7 @@ import {
   DROPZONE_CONFIG,
 } from 'ngx-dropzone-wrapper';
 import { NgxMaskModule } from 'ngx-mask';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UpdatesRoutingModule } from './updates-routing.module';
@@ -46,6 +47,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     UpdatesRoutingModule,
     NgbAlertModule,
     FlatpickrModule.forRoot(),
+    NgxSpinnerModule,
   ],
   providers: [
     {

@@ -21,10 +21,7 @@
         </p>
       </div>
       <div class="card-body">
-        <form
-          class="needs-validation"
-          [formGroup]="employeeForm"
-        >
+        <form class="needs-validation" [formGroup]="employeeForm">
           <h4 class="card-title" style="color: #5156be">Personal Details</h4>
           <hr />
           <div class="row">
@@ -139,7 +136,7 @@
               <div class="mb-3">
                 <label for="validationCustom05">Zip</label>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   id="validationCustom05"
                   formControlName="zip"
@@ -185,7 +182,7 @@
               <div class="mb-3">
                 <label class="form-label">Gender</label>
                 <select class="form-select" formControlName="gender">
-                  <option selected>Select</option>
+                  <option>Select</option>
                   <option>Male</option>
                   <option>Female</option>
                 </select>
@@ -525,7 +522,12 @@
             </div>
           </div>
           <div>
-            <button class="btn btn-primary" type="submit" (click)="onSubmit()">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              (click)="onSubmit()"
+              [disabled]="!employeeForm.valid"
+            >
               Submit form
             </button>
           </div>
@@ -537,3 +539,10 @@
   <!-- end col -->
 </div>
 <!-- end row -->
+
+<ngx-spinner
+  type="ball-clip-rotate"
+  [fullScreen]="true"
+  size="medium"
+  color="#ffffff"
+></ngx-spinner>

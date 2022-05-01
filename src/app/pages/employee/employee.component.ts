@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Employees } from 'src/app/core/models/employees';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-employee',
@@ -38,7 +39,8 @@ export class EmployeeComponent implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     private fbstore: AngularFirestore,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -131,6 +133,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   createEmployeeFireStore() {
+    this.spinner.show();
     const employeeObj: Employees = {
       firstName: this.employeeForm.get('firstName')!.value,
       lastName: this.employeeForm.get('lastName')!.value,
@@ -186,6 +189,7 @@ export class EmployeeComponent implements OnInit {
 
           this.employeesNewCollection.add(employeeObj).then((data) => {
             if (data) {
+              this.spinner.hide();
               this.employeeExists = false;
               this.submitted = false;
               console.log('Employee added in db');
@@ -193,6 +197,7 @@ export class EmployeeComponent implements OnInit {
                 'Employee saved successfully in db!',
                 'Great Job!'
               );
+              this.employeeForm.reset();
             }
           });
         } else {

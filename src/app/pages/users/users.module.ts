@@ -2,7 +2,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDatepickerModule,
+  NgbPaginationModule,
+  NgbTypeaheadModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ArchwizardModule } from 'angular-archwizard';
 import { FlatpickrModule } from 'angularx-flatpickr';
@@ -16,8 +20,8 @@ import { NgxMaskModule } from 'ngx-mask';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { EmployeeRoutingModule } from './employee-routing.module';
-import { EmployeeComponent } from './employee.component';
+import { UsersRoutingModule } from './users-routing.module';
+import { UsersComponent } from './users.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -27,7 +31,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 };
 
 @NgModule({
-  declarations: [EmployeeComponent],
+  declarations: [UsersComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -41,8 +45,10 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     ArchwizardModule,
     NgxMaskModule.forRoot(),
     SharedModule,
-    EmployeeRoutingModule,
+    UsersRoutingModule,
     FlatpickrModule.forRoot(),
+    NgbPaginationModule,
+    NgbTypeaheadModule,
     NgxSpinnerModule,
   ],
   providers: [
@@ -52,4 +58,4 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     },
   ],
 })
-export class EmployeeModule {}
+export class UsersModule {}

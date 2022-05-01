@@ -9,6 +9,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -51,8 +52,10 @@ export class UpdatesComponent implements OnInit {
   filteredUser!: Observable<any>;
   companysCollection!: AngularFirestoreCollection<Company>;
   serviceProvidedLocations: string[] = [];
+  panIndiaLocations: string[] = ['Pan India'];
   locations: string[] = [];
   docid!: string;
+  selectedFirmActivity!: string;
 
   firmActivitys = [
     'Freight Forwarders',
@@ -295,17 +298,11 @@ export class UpdatesComponent implements OnInit {
   accountStatusArr = ['Active', 'Inactive'];
   paymentStatusArr = ['Paid', 'Not Paid'];
 
-  alertDataArr = [
-    {
-      color: 'success',
-      icon: 'mdi-check-all',
-    },
-  ];
-
   constructor(
     public formBuilder: FormBuilder,
     private fbstore: AngularFirestore,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -327,6 +324,7 @@ export class UpdatesComponent implements OnInit {
       ],
     });
     this.initializeModifyForm();
+    this.setFirmActivityValidators();
     this.submit = false;
     this.formsubmit = false;
 
@@ -346,43 +344,33 @@ export class UpdatesComponent implements OnInit {
    */
   initializeModifyForm(): void {
     this.updatesForm = this.formBuilder.group({
-      companyName: [
-        '',
-        [Validators.required, Validators.pattern('[a-zA-Z0-9]+')],
-      ],
-      ownerName: [
-        '',
-        [Validators.required, Validators.pattern('[a-zA-Z0-9]+')],
-      ],
+      companyName: ['', [Validators.required]],
+      ownerName: ['', [Validators.required]],
       firmActivity: ['', [Validators.required]],
       vehicleType: ['', [Validators.required]],
       mobileNumber: [
         '',
         [Validators.required, Validators.pattern('[0-9]{1,10}$')],
       ],
-      alternateMobileNumber: [
-        '',
-        [Validators.required, Validators.pattern('[a-zA-Z0-9]+')],
-      ],
+      alternateMobileNumber: ['', [Validators.pattern('[0-9]{1,10}$')]],
       location: ['', [Validators.required]],
       serviceProvidedLocation: ['', [Validators.required]],
-      referenceName: [
-        '',
-        [Validators.required, Validators.pattern('[a-zA-Z0-9]+')],
-      ],
+      referenceName: ['', [Validators.pattern("^[a-zA-Z -']+")]],
       language: ['', [Validators.required]],
       vehicleNos: [
         '',
         [Validators.required, Validators.pattern('[0-9]{1,12}$')],
       ],
-      aadharNumber: [
-        '',
-        [Validators.required, Validators.pattern('[0-9]{1,12}$')],
-      ],
+      aadharNumber: ['', [Validators.pattern('[0-9]{1,12}$')]],
 
       drivingLicenseNumber: [
         '',
-        [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$')],
+        [
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9]+$'),
+          Validators.minLength(16),
+          Validators.maxLength(16),
+        ],
       ],
       paymentStatus: ['', [Validators.required]],
       accountStatus: ['', [Validators.required]],
@@ -390,11 +378,51 @@ export class UpdatesComponent implements OnInit {
     });
   }
   /**
+   * setFirmActivityValidators validation form data
+   */
+  setFirmActivityValidators() {
+    const companyNameControl = this.updatesForm.get('companyName')!;
+    const vehicleNosControl = this.updatesForm.get('vehicleNos')!;
+    const drivingLicenseNumberControl = this.updatesForm.get(
+      'drivingLicenseNumber'
+    )!;
+
+    this.updatesForm
+      .get('firmActivity')!
+      .valueChanges.subscribe((selectedFirmActivity) => {
+        if (selectedFirmActivity === 'Owner') {
+          companyNameControl.setValidators([Validators.required]);
+          vehicleNosControl.setValidators([Validators.required]);
+          drivingLicenseNumberControl.setValidators([
+            Validators.pattern('[a-zA-Z0-9 ]*$'),
+          ]);
+        } else if (selectedFirmActivity === 'Driver') {
+          companyNameControl.setValidators(null);
+          vehicleNosControl.setValidators(null);
+          drivingLicenseNumberControl.setValidators([
+            Validators.required,
+            Validators.pattern('[a-zA-Z0-9 ]*$'),
+          ]);
+        } else {
+          companyNameControl.setValidators([Validators.required]);
+          vehicleNosControl.setValidators(null);
+          drivingLicenseNumberControl.setValidators([
+            Validators.pattern('[a-zA-Z0-9 ]*$'),
+          ]);
+        }
+
+        companyNameControl.updateValueAndValidity();
+        vehicleNosControl.updateValueAndValidity();
+        drivingLicenseNumberControl.updateValueAndValidity();
+      });
+  }
+  /**
    * Bootstrap validation form data
    */
   getCompanysData(formvalue: { mobileNumber: any }) {
     const mobileNumber = this.CountryCode + formvalue.mobileNumber;
     if (formvalue.mobileNumber.length === 10) {
+      this.spinner.show();
       this.companysCollection = this.fbstore.collection('companys', (ref) =>
         ref.where('mobileNumber', '==', mobileNumber)
       );
@@ -428,12 +456,33 @@ export class UpdatesComponent implements OnInit {
 
       this.filteredUser.subscribe((snapshot) => {
         if (snapshot.length > 0 && !this.updatedValue) {
+          this.spinner.hide();
           console.log(snapshot[0]);
           console.log('User found in db' + snapshot[0].id);
           console.log('repeat');
           this.onFirmActivityValue(snapshot[0]);
           this.docid = snapshot[0].id;
           this.showUpdateForm = true;
+
+          let modifyMobileNumber;
+          let modifyAlternateNumber;
+          const mobileNumber = snapshot[0]['mobileNumber'].indexOf('+91');
+          if (mobileNumber !== -1) {
+            modifyMobileNumber = snapshot[0]['mobileNumber'].replace('+91', '');
+          } else {
+            modifyMobileNumber = snapshot[0]['mobileNumber'];
+          }
+
+          const alternateNumber =
+            snapshot[0]['alternateMobileNumber'].indexOf('+91');
+          if (alternateNumber !== -1) {
+            modifyAlternateNumber = snapshot[0][
+              'alternateMobileNumber'
+            ].replace('+91', '');
+          } else {
+            modifyAlternateNumber = snapshot[0]['alternateMobileNumber'];
+          }
+
           this.updatesForm.controls['companyName'].setValue(
             snapshot[0]['companyName']
           );
@@ -447,10 +496,10 @@ export class UpdatesComponent implements OnInit {
             snapshot[0]['vehicleType']
           );
           this.updatesForm.controls['mobileNumber'].setValue(
-            snapshot[0]['mobileNumber']
+            modifyMobileNumber
           );
           this.updatesForm.controls['alternateMobileNumber'].setValue(
-            snapshot[0]['alternateMobileNumber']
+            modifyAlternateNumber
           );
           this.updatesForm.controls['location'].setValue(
             snapshot[0]['location']
@@ -483,6 +532,7 @@ export class UpdatesComponent implements OnInit {
             snapshot[0]['passwordPin']
           );
         } else {
+          this.spinner.hide();
           if (!this.updatedValue) {
             this.showUpdateForm = false;
             console.log('User NOT found');
@@ -510,11 +560,13 @@ export class UpdatesComponent implements OnInit {
   /**
    * Bootstrap validation form data
    */
-  onFirmActivityChange(value: { detail: { value: string } }) {
-    if (value.detail.value === 'Driver') {
+  onFirmActivityChange(event: any) {
+    console.log(event);
+    this.selectedFirmActivity = event;
+    if (event === 'Driver') {
       this.checkFirmActivityIsOwner = false;
       this.checkFirmActivityIsDriver = true;
-    } else if (value.detail.value === 'Owner') {
+    } else if (event === 'Owner') {
       this.checkFirmActivityIsDriver = false;
       this.checkFirmActivityIsOwner = true;
     } else {
@@ -550,10 +602,11 @@ export class UpdatesComponent implements OnInit {
     console.log(value);
     console.log('search');
     this.updatedValue = false;
-    this.getCompanysData(value);
     // stop here if form is invalid
     if (this.searchForm.invalid) {
       return;
+    } else {
+      this.getCompanysData(value);
     }
   }
 
@@ -562,8 +615,13 @@ export class UpdatesComponent implements OnInit {
    */
   onSubmitUpdate() {
     this.submitted = true;
-    console.log('update');
-    this.doModify();
+
+    // stop here if form is invalid
+    if (this.updatesForm.invalid) {
+      return;
+    } else {
+      this.doModify();
+    }
   }
   /**
    * On submit updates form
@@ -574,9 +632,9 @@ export class UpdatesComponent implements OnInit {
       ownerName: this.updatesForm.get('ownerName')!.value,
       firmActivity: this.updatesForm.get('firmActivity')!.value,
       vehicleType: this.updatesForm.get('vehicleType')!.value,
-      mobileNumber: this.updatesForm.get('mobileNumber')!.value,
-      alternateMobileNumber: this.updatesForm.get('alternateMobileNumber')!
-        .value,
+      mobileNumber: '+91' + this.updatesForm.get('mobileNumber')!.value,
+      alternateMobileNumber:
+        '+91' + this.updatesForm.get('alternateMobileNumber')!.value,
       location: this.updatesForm.get('location')!.value,
       serviceProvidedLocation: this.updatesForm.get('serviceProvidedLocation')!
         .value,
@@ -608,7 +666,7 @@ export class UpdatesComponent implements OnInit {
         )
       )
       .subscribe((_doc: any) => {
-        let id = _doc[0].id; //first result of query [0]
+        // let id = _doc[0].id; //first result of query [0]
         this.fbstore
           .doc(`companys/${this.docid}`)
           .update(companyobj)

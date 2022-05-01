@@ -1,0 +1,184 @@
+<!-- start page title -->
+<app-pagetitle
+  title="Registered Users Table"
+  [breadcrumbItems]="breadCrumbItems"
+></app-pagetitle>
+<!-- end page title -->
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Default Users Datatable</h4>
+        <p class="card-title-desc">Here is registered users list datatable.</p>
+      </div>
+      <div class="card-body">
+        <div class="row mb-md-2">
+          <div class="col-sm-12 col-md-6">
+            <div class="dataTables_length" id="tickets-table_length">
+              <label class="d-inline-flex align-items-center"
+                >Show
+                <select
+                  name="tickets-table_length"
+                  aria-controls="tickets-table"
+                  name="pageSize"
+                  [(ngModel)]="service.pageSize"
+                  class="form-control form-control-sm mx-2"
+                >
+                  <option [ngValue]="1000">1000</option>
+                  <option [ngValue]="5000">5000</option>
+                  <option [ngValue]="10000">10000</option>
+                </select>
+                entries</label
+              >
+            </div>
+          </div>
+          <!-- Search -->
+          <div class="col-sm-12 col-md-6">
+            <div
+              id="tickets-table_filter"
+              class="dataTables_filter text-md-end"
+            >
+              <label class="d-inline-flex align-items-center"
+                >Search:
+                <input
+                  type="text"
+                  name="searchTerm"
+                  class="form-control form-control-sm ms-2"
+                  aria-controls="tickets-table"
+                  [(ngModel)]="service.searchTerm"
+              /></label>
+            </div>
+          </div>
+          <!-- End search -->
+        </div>
+
+        <table
+          id="datatable"
+          class="table table-bordered dt-responsive nowrap w-100 datatables"
+        >
+          <thead>
+            <tr>
+              <th sortable="companyName" (sort)="onSort($event)">
+                Company Name
+              </th>
+              <th sortable="ownerName" (sort)="onSort($event)">Owner Name</th>
+              <th sortable="firmActivity" (sort)="onSort($event)">
+                Firm Activity
+              </th>
+              <th sortable="mobileNumber" (sort)="onSort($event)">
+                Mobile Number
+              </th>
+              <th sortable="location" (sort)="onSort($event)">Location</th>
+              <th sortable="referenceName" (sort)="onSort($event)">
+                Password Pin
+              </th>
+              <th sortable="paymentStatus" (sort)="onSort($event)">
+                Payment Status
+              </th>
+              <th sortable="accountStatus" (sort)="onSort($event)">
+                Account Status
+              </th>
+              <th sortable="accountStatus" (sort)="onSort($event)">
+                User Entry
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
+            <tr>
+              <td>
+                <ngb-highlight
+                  [result]="table.companyName"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.ownerName"
+                  [term]="service.searchTerm"
+                >
+                </ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.firmActivity"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.mobileNumber"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.location"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.passwordPin"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.paymentStatus"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.accountStatus"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.userEntry"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row justify-content-md-between align-items-md-center mt-2">
+          <div class="col-sm-12 col-md-12">
+            <div
+              class="dataTables_info mb-2"
+              id="tickets-table_info"
+              role="status"
+              aria-live="polite"
+            >
+              Showing
+              {{ service.startIndex }} to {{ service.endIndex }} of
+              {{ service.totalRecords }}
+              entries
+            </div>
+          </div>
+        </div>
+        <div
+          class="row justify-content-md-between align-items-md-center mt-2"
+          style="overflow: auto"
+        >
+          <!-- Pagination -->
+          <div class="col-sm-12 col-md-12">
+            <div class="text-md-right float-md-end pagination-rounded">
+              <ngb-pagination
+                [collectionSize]="(total$ | async)!"
+                [(page)]="service.page"
+                [pageSize]="service.pageSize"
+              >
+              </ngb-pagination>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
