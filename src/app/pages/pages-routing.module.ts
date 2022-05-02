@@ -78,6 +78,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'employee-update',
+    loadChildren: () =>
+      import('./employee-update/employee-update.module').then(
+        (m) => m.EmployeeUpdateModule
+      ),
+  },
+  {
     path: 'users',
     loadChildren: () =>
       import('./users/users.module').then((m) => m.UsersModule),

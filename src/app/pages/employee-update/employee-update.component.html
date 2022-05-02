@@ -1,6 +1,6 @@
 <!-- start page title -->
 <app-pagetitle
-  title="Employee"
+  title="Employee Updates"
   [breadcrumbItems]="breadCrumbItems"
 ></app-pagetitle>
 <!-- end page title -->
@@ -9,31 +9,69 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">Employee Validation - Form</h4>
+        <h4 class="card-title">Employee Update Validation - Form</h4>
         <p class="card-title-desc">
           Provide valuable, actionable feedback to your users with HTML5 form
           validation–available in all our supported browsers.
-          <a
-            routerLink="/employee-list"
-            style="font-size: 14px; font-weight: bold; float: right"
-            class="btn btn-primary mt-2 me-2 waves-effect waves-light"
-            >Employee List</a
-          >
-          <a
-            routerLink="/employee-update"
-            style="
-              font-size: 14px;
-              font-weight: bold;
-              float: right;
-              margin-right: 50px;
-            "
-            class="btn btn-light mt-2 me-2 waves-effect waves-light"
-            >Update Employee</a
-          >
         </p>
       </div>
       <div class="card-body">
-        <form class="needs-validation" [formGroup]="employeeForm">
+        <form class="needs-validation" [formGroup]="searchForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="validationCustom01">Mobile Number</label
+                ><span class="required-field"></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom01"
+                  formControlName="mobileNumber"
+                  placeholder="Mobile Number"
+                  [ngClass]="{
+                    'is-valid': submit && form.mobileNumber?.errors
+                  }"
+                  maxlength="10"
+                  minlength="10"
+                />
+                <div
+                  *ngIf="submit && form.mobileNumber.errors"
+                  class="valid-feedback"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              (click)="onSubmitSearch(searchForm.value)"
+              [disabled]="!searchForm.valid"
+            >
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
+
+<div class="row" *ngIf="showUpdateForm">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Emplyee Validation - Form</h4>
+        <p class="card-title-desc">
+          Provide valuable, actionable feedback to your users with HTML5 form
+          validation–available in all our supported browsers.
+        </p>
+      </div>
+      <div class="card-body">
+        <form class="needs-validation" [formGroup]="employeeUpdateForm">
           <h4 class="card-title" style="color: #5156be">Personal Details</h4>
           <hr />
           <div class="row">
@@ -545,10 +583,18 @@
             <button
               class="btn btn-primary"
               type="submit"
-              (click)="onSubmit()"
-              [disabled]="!employeeForm.valid"
+              (click)="onSubmitUpdate()"
+              [disabled]="!employeeUpdateForm.valid"
             >
-              Submit form
+              Update form
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger waves-effect waves-light"
+              style="float: right"
+              (click)="deleteData()"
+            >
+              <i class="bx bx-block font-size-16 align-middle me-2"></i> Delete
             </button>
           </div>
         </form>
@@ -558,7 +604,6 @@
   </div>
   <!-- end col -->
 </div>
-<!-- end row -->
 
 <ngx-spinner
   type="ball-clip-rotate"

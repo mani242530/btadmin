@@ -20,7 +20,8 @@
           <div class="row">
             <div class="col-md-6">
               <div class="mb-3">
-                <label for="validationCustom01">Mobile Number</label>
+                <label for="validationCustom01">Mobile Number</label
+                ><span class="required-field"></span>
                 <input
                   type="text"
                   class="form-control"
@@ -45,6 +46,7 @@
               class="btn btn-primary"
               type="submit"
               (click)="onSubmitSearch(searchForm.value)"
+              [disabled]="!searchForm.valid"
             >
               Search
             </button>
@@ -73,7 +75,8 @@
           <div class="row">
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom01">Firm Activity</label>
+                <label for="validationCustom01">Firm Activity</label
+                ><span class="required-field"></span>
                 <ng-select
                   [items]="firmActivitys"
                   bindLabel="name"
@@ -88,7 +91,8 @@
             </div>
             <div class="col-md-4" *ngIf="!checkFirmActivityIsDriver">
               <div class="mb-3">
-                <label for="validationCustom02">Company name</label>
+                <label for="validationCustom02">Company name</label
+                ><span class="required-field"></span>
                 <input
                   type="text"
                   class="form-control"
@@ -105,7 +109,8 @@
             </div>
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom03">Owner Name</label>
+                <label for="validationCustom03">Owner Name</label
+                ><span class="required-field"></span>
                 <input
                   type="text"
                   class="form-control"
@@ -129,7 +134,8 @@
           <div class="row">
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom04">Location</label>
+                <label for="validationCustom04">Location</label
+                ><span class="required-field"></span>
                 <ng-select
                   [items]="locations"
                   bindLabel="name"
@@ -141,17 +147,32 @@
                 </ng-select>
               </div>
             </div>
-            <label for="validationCustom05">Service Provided Location</label>
-            <div
-              class="col-md-4"
-              *ngIf="
-                selectedFirmActivity === 'Freight Forwarders';
-                else other_service_locations
-              "
-            >
-              <div class="mb-3">
+            <div class="col-md-4">
+              <label for="validationCustom05">Service Provided Location</label
+              ><span class="required-field"></span>
+              <div
+                *ngIf="
+                  selectedFirmActivity === 'Freight Forwarders';
+                  else other_service_locations
+                "
+              >
+                <div class="mb-3">
+                  <ng-select
+                    [items]="panIndiaLocations"
+                    [multiple]="true"
+                    bindLabel="name"
+                    formControlName="serviceProvidedLocation"
+                  >
+                    <ng-template ng-optgroup-tmp let-item="item">
+                      {{ item || "Unnamed group" }}
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+
+              <ng-template #other_service_locations class="mb-3">
                 <ng-select
-                  [items]="panIndiaLocations"
+                  [items]="serviceProvidedLocations"
                   [multiple]="true"
                   bindLabel="name"
                   formControlName="serviceProvidedLocation"
@@ -160,25 +181,13 @@
                     {{ item || "Unnamed group" }}
                   </ng-template>
                 </ng-select>
-              </div>
+              </ng-template>
             </div>
 
-            <ng-template #other_service_locations class="mb-3">
-              <ng-select
-                [items]="serviceProvidedLocations"
-                [multiple]="true"
-                bindLabel="name"
-                formControlName="serviceProvidedLocation"
-              >
-                <ng-template ng-optgroup-tmp let-item="item">
-                  {{ item || "Unnamed group" }}
-                </ng-template>
-              </ng-select>
-            </ng-template>
-
             <div class="col-md-4">
-              <div class="mb-3 mt-3">
-                <label for="validationCustom03">Vehicle Type</label>
+              <div class="mb-3">
+                <label for="validationCustom03">Vehicle Type</label
+                ><span class="required-field"></span>
                 <ng-select
                   [items]="vehicleTypes"
                   [multiple]="true"
@@ -196,7 +205,8 @@
           <div class="row">
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom05">Vehicle Nos</label>
+                <label for="validationCustom05">Vehicle Nos</label
+                ><span class="required-field"></span>
                 <input
                   type="text"
                   class="form-control"
@@ -217,7 +227,8 @@
             </div>
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom04">Language</label>
+                <label for="validationCustom04">Language</label
+                ><span class="required-field"></span>
                 <ng-select
                   [items]="languages"
                   bindLabel="id"
@@ -231,7 +242,8 @@
             </div>
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom03">Mobile Number</label>
+                <label for="validationCustom03">Mobile Number</label
+                ><span class="required-field"></span>
                 <input
                   type="text"
                   class="form-control"
@@ -309,7 +321,8 @@
             </div>
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom03">Driving License Number</label>
+                <label for="validationCustom03">Driving License Number</label
+                ><span class="required-field"></span>
                 <input
                   type="text"
                   class="form-control"
@@ -337,7 +350,8 @@
           <div class="row">
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom04">Payment Status</label>
+                <label for="validationCustom04">Payment Status</label
+                ><span class="required-field"></span>
                 <ng-select
                   [items]="paymentStatusArr"
                   bindLabel="id"
@@ -351,7 +365,8 @@
             </div>
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom03">Account Status</label>
+                <label for="validationCustom03">Account Status</label
+                ><span class="required-field"></span>
                 <ng-select
                   [items]="accountStatusArr"
                   bindLabel="name"
@@ -391,7 +406,8 @@
           <div class="row">
             <div class="col-md-4">
               <div class="mb-3">
-                <label for="validationCustom03">Password Pin</label>
+                <label for="validationCustom03">Password Pin</label
+                ><span class="required-field"></span>
                 <input
                   type="text"
                   class="form-control"

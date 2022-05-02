@@ -51,11 +51,13 @@ export class UpdatesComponent implements OnInit {
   CountryCode: any = '+91';
   filteredUser!: Observable<any>;
   companysCollection!: AngularFirestoreCollection<Company>;
+  modifyCompanysCollection!: AngularFirestoreCollection<Company>;
   serviceProvidedLocations: string[] = [];
   panIndiaLocations: string[] = ['Pan India'];
   locations: string[] = [];
   docid!: string;
   selectedFirmActivity!: string;
+  filterModifyUser!: Observable<any>;
 
   firmActivitys = [
     'Freight Forwarders',
@@ -627,6 +629,7 @@ export class UpdatesComponent implements OnInit {
    * On submit updates form
    */
   doModify() {
+    const mobileNo = '+91' + this.updatesForm.get('mobileNumber')!.value;
     const companyobj: Company = {
       companyName: this.updatesForm.get('companyName')!.value,
       ownerName: this.updatesForm.get('ownerName')!.value,
@@ -647,40 +650,70 @@ export class UpdatesComponent implements OnInit {
       accountStatus: this.updatesForm.get('accountStatus')!.value,
       passwordPin: this.updatesForm.get('passwordPin')!.value,
     };
-    let doc = this.fbstore.collection('companys', (ref) =>
-      ref.where(
-        'mobileNumber',
-        '==',
-        this.updatesForm.get('mobileNumber')!.value
-      )
+
+    this.modifyCompanysCollection = this.fbstore.collection('companys', (ref) =>
+      ref.where('mobileNumber', '==', mobileNo)
     );
-    doc
+    this.modifyCompanysCollection
       .snapshotChanges()
       .pipe(
         map((actions) =>
-          actions.map((a) => {
-            const data = a.payload.doc.data();
-            const id = a.payload.doc.id;
+          actions.map((action) => {
+            const data = action.payload.doc.data() as Company;
+            const id = action.payload.doc.id;
             return { id };
+            // this.fbstore.doc('companys/' + id).update(companyobj);
+            // this.fbstore.collection('companys').doc(id).update(companyobj);
           })
         )
       )
       .subscribe((_doc: any) => {
-        // let id = _doc[0].id; //first result of query [0]
-        this.fbstore
-          .doc(`companys/${this.docid}`)
-          .update(companyobj)
-          .then((data) => {
-            console.log(data);
-            // eslint-disable-next-line no-redeclare
-            this.toastr.success('Updated successfully in db!', 'Great Job!');
-            this.showUpdateForm = false;
-            this.submitted = false;
-            this.updatedValue = true;
-            this.updatesForm.reset();
-            this.searchForm.reset();
-          });
+        console.log(_doc);
+        let id = _doc[0].id; //first result of query [0]
+        this.updateMethod(id, companyobj);
       });
+    // this.filterModifyUser.subscribe((snapshot: any) => {
+    // let id = _doc[0].id; //first result of query [0]
+    // this.updateMethod(id, companyobj);
+    // this.fbstore
+    //   .doc(`companys/${id}`)
+    //   .update(companyobj)
+    //   .then(() => {
+    //     console.log();
+    //     // eslint-disable-next-line no-redeclare
+    //     this.toastr.success('Updated successfully in db!', 'Great Job!');
+    //     this.showUpdateForm = false;
+    //     this.submitted = false;
+    //     this.updatedValue = true;
+    //     this.updatesForm.reset();
+    //     this.searchForm.reset();
+    //   })
+    //   .catch((error) => console.log(error));
+    // });
+  }
+  /* Update Data
+   */
+  updateMethod(id: string, companyobj: Partial<Company>) {
+    try {
+      this.fbstore
+        .doc('companys/' + id)
+        .update(companyobj)
+        .then(() => {
+          this.toastr.success('Updated successfully in db!', 'Great Job!');
+          this.showUpdateForm = false;
+          this.submitted = false;
+          this.updatedValue = true;
+          this.updatesForm.reset();
+          this.searchForm.reset();
+        })
+        .catch((error) => {
+          // The document probably doesn't exist.
+          console.error('Error updating document: ', error);
+        });
+    } catch (error) {
+      console.error('Error updating document: ', error);
+      // this.toastr.success('Delete is not done in db!', 'Something went wrong!');
+    }
   }
   /* Delete Data remove
    */
@@ -691,7 +724,7 @@ export class UpdatesComponent implements OnInit {
       this.fbstore
         .doc('companys/' + this.docid)
         .delete()
-        .then((data) => {
+        .then(() => {
           console.log('Data deleted Successfully');
           this.toastr.success('Deleted successfully in db!', 'Great Job!');
           this.showUpdateForm = false;

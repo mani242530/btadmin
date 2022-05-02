@@ -6,7 +6,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Employees } from 'src/app/core/models/employees';
+import { Employee } from 'src/app/core/models/employees';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -34,7 +34,7 @@ export class EmployeeComponent implements OnInit {
 
   filteredEmployee!: Observable<any>;
 
-  employeesNewCollection!: AngularFirestoreCollection<Employees>;
+  employeesNewCollection!: AngularFirestoreCollection<Employee>;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -65,8 +65,8 @@ export class EmployeeComponent implements OnInit {
       city: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       state: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       zip: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      mobilenumber: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      mobileNumber: ['', [Validators.required]],
+      email: [''],
       dateOfBirth: ['', [Validators.required]],
       gender: ['', [Validators.required]],
       emergencyContactNumber: ['', [Validators.required]],
@@ -74,16 +74,16 @@ export class EmployeeComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern('[a-zA-Z0-9]+')],
       ],
-      bankName: ['', [Validators.required]],
-      accountNumber: ['', [Validators.required]],
-      ifscCode: ['', [Validators.required]],
-      status: ['', [Validators.required]],
-      joiningDate: ['', [Validators.required]],
+      bankName: [''],
+      accountNumber: [''],
+      ifscCode: [''],
+      status: [''],
+      joiningDate: [''],
       lastDate: [''],
-      role: ['', [Validators.required]],
-      responsibility: ['', [Validators.required]],
-      leaveTotal: ['', [Validators.required]],
-      remainingLeaves: ['', [Validators.required]],
+      role: [''],
+      responsibility: [''],
+      leaveTotal: [''],
+      remainingLeaves: [''],
     });
 
     this.submit = false;
@@ -134,14 +134,14 @@ export class EmployeeComponent implements OnInit {
 
   createEmployeeFireStore() {
     this.spinner.show();
-    const employeeObj: Employees = {
+    const employeeObj: Employee = {
       firstName: this.employeeForm.get('firstName')!.value,
       lastName: this.employeeForm.get('lastName')!.value,
       address: this.employeeForm.get('address')!.value,
       city: this.employeeForm.get('city')!.value,
       state: this.employeeForm.get('state')!.value,
       zip: this.employeeForm.get('zip')!.value,
-      mobileNumber: '+91' + this.employeeForm.get('mobilenumber')!.value,
+      mobileNumber: '+91' + this.employeeForm.get('mobileNumber')!.value,
       email: this.employeeForm.get('email')!.value,
       dateOfBirth: this.employeeForm.get('dateOfBirth')!.value,
       gender: this.employeeForm.get('gender')!.value,
@@ -160,8 +160,8 @@ export class EmployeeComponent implements OnInit {
       remainingLeaves: this.employeeForm.get('remainingLeaves')!.value,
     };
     Object.keys(employeeObj).forEach((k) => {
-      if (typeof [k as keyof Employees] !== 'object') {
-        [k as keyof Employees] = [k.trim() as keyof Employees];
+      if (typeof [k as keyof Employee] !== 'object') {
+        [k as keyof Employee] = [k.trim() as keyof Employee];
       }
     });
 
@@ -175,7 +175,7 @@ export class EmployeeComponent implements OnInit {
         .pipe(
           map((actions) => {
             return actions.map((action) => {
-              const data = action.payload.doc.data() as Employees;
+              const data = action.payload.doc.data() as Employee;
               return {
                 id: action.payload.doc.id,
               };
