@@ -89,6 +89,39 @@ const routes: Routes = [
     loadChildren: () =>
       import('./users/users.module').then((m) => m.UsersModule),
   },
+  {
+    path: 'reports/allcity',
+    loadChildren: () =>
+      import('./reports/allcity/allcity.module').then((a) => a.AllCityModule),
+  },
+  {
+    path: 'reports/dailysale',
+    loadChildren: () =>
+      import('./reports/dailysale/dailysale.module').then(
+        (a) => a.DailySaleModule
+      ),
+  },
+  {
+    path: 'reports/dailyuser',
+    loadChildren: () =>
+      import('./reports/dailyuser/dailyuser.module').then(
+        (a) => a.DailyUserModule
+      ),
+  },
+  {
+    path: 'reports/monthlysale',
+    loadChildren: () =>
+      import('./reports/monthlysale/monthlysale.module').then(
+        (a) => a.MonthlySaleModule
+      ),
+  },
+  {
+    path: 'reports/monthlyuser',
+    loadChildren: () =>
+      import('./reports/monthlyuser/monthlyuser.module').then(
+        (a) => a.MonthlyUserModule
+      ),
+  },
 ];
 
 @NgModule({

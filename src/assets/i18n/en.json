@@ -99,7 +99,14 @@
       "BADGE": "04"
     },
     "REPORTS": {
-      "TEXT": "Reports"
+      "TEXT": "Reports",
+      "LIST": {
+        "DAILYSALE": "Daily Sale Report",
+        "MONTHLYSALE": "Monthly Sale Report",
+        "DAILYUSER": "Daily User Report",
+        "MONTHLYUSER": "Monthly User Report",
+        "ALLCITY": "All City Report"
+      }
     },
     "UPDATES": {
       "TEXT": "Updates"

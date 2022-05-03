@@ -17,6 +17,38 @@ export const MENU: MenuItem[] = [
     label: 'MENUITEMS.REPORTS.TEXT',
     icon: 'file-text',
     link: '/',
+    subItems: [
+      {
+        id: 17,
+        label: 'MENUITEMS.REPORTS.LIST.DAILYSALE',
+        link: '/reports/dailysale',
+        parentId: 16,
+      },
+      {
+        id: 18,
+        label: 'MENUITEMS.REPORTS.LIST.MONTHLYSALE',
+        link: '/reports/monthlysale',
+        parentId: 16,
+      },
+      {
+        id: 20,
+        label: 'MENUITEMS.REPORTS.LIST.DAILYUSER',
+        link: '/reports/dailyuser',
+        parentId: 16,
+      },
+      {
+        id: 21,
+        label: 'MENUITEMS.REPORTS.LIST.MONTHLYUSER',
+        link: '/reports/monthlyuser',
+        parentId: 16,
+      },
+      {
+        id: 22,
+        label: 'MENUITEMS.REPORTS.LIST.ALLCITY',
+        link: '/reports/allcity',
+        parentId: 16,
+      },
+    ],
   },
   {
     id: 4,
