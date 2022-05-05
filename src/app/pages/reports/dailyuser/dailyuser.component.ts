@@ -52,7 +52,7 @@ export class DailyUserComponent implements OnInit {
   totalData!: number;
 
   // All City Filter form
-  allCityFilterForm!: FormGroup;
+  dailyUserForm!: FormGroup;
 
   // Form submition
   submit!: boolean;
@@ -67,6 +67,7 @@ export class DailyUserComponent implements OnInit {
 
   columnsToDisplay = [
     'location',
+    'payment_date',
     'companyName',
     'firmActivity',
     'mobileNumber',
@@ -77,7 +78,10 @@ export class DailyUserComponent implements OnInit {
   @ViewChild('TABLE')
   table!: ElementRef;
 
+  selectedAll = 'All';
+  selectedDate = new Date().toISOString().slice(0, 10);
   firmActivitys = [
+    'All',
     'Freight Forwarders',
     'Booking',
     'Supplier',
@@ -86,6 +90,7 @@ export class DailyUserComponent implements OnInit {
   ];
 
   vehicleTypes = [
+    'All',
     'LCV',
     'Trailer',
     'Truck (Taurus)',
@@ -98,6 +103,7 @@ export class DailyUserComponent implements OnInit {
   ];
 
   locationsArr = [
+    'All',
     'Agartala',
     'Agra',
     'Ahmedabad',
@@ -258,8 +264,8 @@ export class DailyUserComponent implements OnInit {
     'Pan India',
   ];
 
-  accountStatusArr = ['Active', 'Inactive'];
-  paymentStatusArr = ['Paid', 'Not Paid'];
+  accountStatusArr = ['All', 'Active', 'Inactive'];
+  paymentStatusArr = ['All', 'Paid', 'Not Paid'];
 
   constructor(
     public service: DailyUserService,
@@ -288,11 +294,12 @@ export class DailyUserComponent implements OnInit {
     /**
      * Bootstrap validation form data
      */
-    this.allCityFilterForm = this.formBuilder.group({
+    this.dailyUserForm = this.formBuilder.group({
       firmActivity: ['', [Validators.required]],
       date: ['', [Validators.required]],
       location: ['', [Validators.required]],
       paymentStatus: ['', [Validators.required]],
+      referenceName: ['', [Validators.required]],
     });
   }
 
@@ -304,7 +311,7 @@ export class DailyUserComponent implements OnInit {
     console.log(value);
     console.log('search');
     // stop here if form is invalid
-    if (this.allCityFilterForm.invalid) {
+    if (this.dailyUserForm.invalid) {
       return;
     } else {
       this._fetchData(value);
@@ -324,13 +331,24 @@ export class DailyUserComponent implements OnInit {
   getFirebaseData(_value: any) {
     try {
       this.spinner.show();
+      const location = _value.location === 'All' ? '' : _value.location;
+      const locationCondition = _value.location === 'All' ? '!=' : '==';
+
+      const firmActivity = _value.firmActivity === 'All' ? '' : _value.location;
+      const firmActivityCondition = _value.firmActivity === 'All' ? '!=' : '==';
+
+      const paymentStatus =
+        _value.paymentStatus === 'All' ? '' : _value.location;
+      const paymentStatusCondition =
+        _value.paymentStatus === 'All' ? '!=' : '==';
+
       this.companysCollection = this.fbstore.collection('companys', (ref) =>
         ref
-          .where('location', '==', _value.location)
-          .where('firmActivity', '==', _value.firmActivity)
-          // .where('mobileNumber', '==', _value.mobileNumber)
-          // .where('companyName', '==', _value.companyName)
-          .where('paymentStatus', '==', _value.paymentStatus)
+          .where('location', locationCondition, location)
+          .where('payment_date', '==', _value.date)
+          .where('firmActivity', firmActivityCondition, firmActivity)
+          .where('paymentStatus', paymentStatusCondition, paymentStatus)
+          .where('referenceName', '==', _value.referenceName)
       );
       this.getCompanys = this.companysCollection.snapshotChanges().pipe(
         map((actions) => {

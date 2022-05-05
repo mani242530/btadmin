@@ -52,7 +52,7 @@ export class MonthlySaleComponent implements OnInit {
   totalData!: number;
 
   // All City Filter form
-  allCityFilterForm!: FormGroup;
+  monthlySaleFilterForm!: FormGroup;
 
   // Form submition
   submit!: boolean;
@@ -67,6 +67,7 @@ export class MonthlySaleComponent implements OnInit {
 
   columnsToDisplay = [
     'location',
+    'payment_date',
     'companyName',
     'firmActivity',
     'mobileNumber',
@@ -77,7 +78,10 @@ export class MonthlySaleComponent implements OnInit {
   @ViewChild('TABLE')
   table!: ElementRef;
 
+  selectedAll = 'All';
+  selectedDate = new Date().toISOString().slice(0, 10);
   firmActivitys = [
+    'All',
     'Freight Forwarders',
     'Booking',
     'Supplier',
@@ -86,6 +90,7 @@ export class MonthlySaleComponent implements OnInit {
   ];
 
   vehicleTypes = [
+    'All',
     'LCV',
     'Trailer',
     'Truck (Taurus)',
@@ -98,6 +103,7 @@ export class MonthlySaleComponent implements OnInit {
   ];
 
   locationsArr = [
+    'All',
     'Agartala',
     'Agra',
     'Ahmedabad',
@@ -258,8 +264,8 @@ export class MonthlySaleComponent implements OnInit {
     'Pan India',
   ];
 
-  accountStatusArr = ['Active', 'Inactive'];
-  paymentStatusArr = ['Paid', 'Not Paid'];
+  accountStatusArr = ['All', 'Active', 'Inactive'];
+  paymentStatusArr = ['All', 'Paid', 'Not Paid'];
 
   constructor(
     public service: MonthlySaleService,
@@ -288,10 +294,11 @@ export class MonthlySaleComponent implements OnInit {
     /**
      * Bootstrap validation form data
      */
-    this.allCityFilterForm = this.formBuilder.group({
-      firmActivity: ['', [Validators.required]],
-      date: ['', [Validators.required]],
+    this.monthlySaleFilterForm = this.formBuilder.group({
       location: ['', [Validators.required]],
+      firmActivity: ['', [Validators.required]],
+      fromDate: ['', [Validators.required]],
+      toDate: ['', [Validators.required]],
       paymentStatus: ['', [Validators.required]],
     });
   }
@@ -304,7 +311,7 @@ export class MonthlySaleComponent implements OnInit {
     console.log(value);
     console.log('search');
     // stop here if form is invalid
-    if (this.allCityFilterForm.invalid) {
+    if (this.monthlySaleFilterForm.invalid) {
       return;
     } else {
       this._fetchData(value);
@@ -324,14 +331,24 @@ export class MonthlySaleComponent implements OnInit {
   getFirebaseData(_value: any) {
     try {
       this.spinner.show();
+
+      const location = _value.location === 'All' ? '' : _value.location;
+      const locationCondition = _value.location === 'All' ? '!=' : '==';
+
+      const firmActivity = _value.firmActivity === 'All' ? '' : _value.location;
+      const firmActivityCondition = _value.firmActivity === 'All' ? '!=' : '==';
+
+      const paymentStatus =
+        _value.paymentStatus === 'All' ? '' : _value.location;
+      const paymentStatusCondition =
+        _value.paymentStatus === 'All' ? '!=' : '==';
+
       this.companysCollection = this.fbstore.collection('companys', (ref) =>
         ref
-          .where('location', '==', _value.location)
-          .where('firmActivity', '==', _value.firmActivity)
-          // .where('mobileNumber', '==', _value.mobileNumber)
-          // .where('companyName', '==', _value.companyName)
-          .where('paymentStatus', '==', _value.paymentStatus)
+          .where('payment_date', '>=', _value.fromDate)
+          .where('payment_date', '<=', _value.toDate)
       );
+
       this.getCompanys = this.companysCollection.snapshotChanges().pipe(
         map((actions) => {
           return actions.map((action) => {

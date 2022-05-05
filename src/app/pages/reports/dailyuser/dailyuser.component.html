@@ -16,7 +16,7 @@
         </p>
       </div>
       <div class="card-body">
-        <form class="needs-validation" [formGroup]="allCityFilterForm">
+        <form class="needs-validation" [formGroup]="dailyUserForm">
           <div class="row">
             <div class="col-md-3">
               <div class="mb-3">
@@ -35,7 +35,7 @@
               </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
               <div class="mb-3">
                 <label for="validationCustom01">Date</label
                 ><span class="required-field"></span>
@@ -48,7 +48,7 @@
               </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
               <div class="mb-3">
                 <label for="validationCustom01">Firm Activity </label
                 ><span class="required-field"></span>
@@ -57,6 +57,7 @@
                   bindLabel="name"
                   formControlName="firmActivity"
                   placeholder="Select"
+                  [(ngModel)]="selectedAll"
                 >
                   <ng-template ng-optgroup-tmp let-item="item">
                     {{ item || "Unnamed group" }}
@@ -65,7 +66,7 @@
               </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
               <div class="mb-3">
                 <label for="validationCustom01">Payment Status</label
                 ><span class="required-field"></span>
@@ -81,14 +82,28 @@
                 </ng-select>
               </div>
             </div>
+
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="validationCustom01">Reference Name</label
+                ><span class="required-field"></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validationCustom03"
+                  formControlName="referenceName"
+                  placeholder="Enter Reference name"
+                />
+              </div>
+            </div>
           </div>
 
           <div>
             <button
               class="btn btn-primary"
               type="submit"
-              (click)="onSubmitSearch(allCityFilterForm.value)"
-              [disabled]="!allCityFilterForm.valid"
+              (click)="onSubmitSearch(dailyUserForm.value)"
+              [disabled]="!dailyUserForm.valid"
             >
               Filter
             </button>

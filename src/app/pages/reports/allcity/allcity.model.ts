@@ -17,4 +17,5 @@ export interface AllCity {
   userEntry: string;
   vehicleType: string[];
   vehicleNos: string;
+  payment_date: string;
 }

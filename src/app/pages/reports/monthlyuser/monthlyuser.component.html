@@ -16,7 +16,7 @@
         </p>
       </div>
       <div class="card-body">
-        <form class="needs-validation" [formGroup]="allCityFilterForm">
+        <form class="needs-validation" [formGroup]="monthlyUserFilterForm">
           <div class="row">
             <div class="col-md-3">
               <div class="mb-3">
@@ -87,8 +87,8 @@
             <button
               class="btn btn-primary"
               type="submit"
-              (click)="onSubmitSearch(allCityFilterForm.value)"
-              [disabled]="!allCityFilterForm.valid"
+              (click)="onSubmitSearch(monthlyUserFilterForm.value)"
+              [disabled]="!monthlyUserFilterForm.valid"
             >
               Filter
             </button>
