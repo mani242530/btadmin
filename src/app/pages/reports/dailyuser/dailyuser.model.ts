@@ -17,4 +17,5 @@ export interface DailyUser {
   userEntry: string;
   vehicleType: string[];
   vehicleNos: string;
+  payment_date: string;
 }

@@ -330,24 +330,95 @@ export class DailySaleComponent implements OnInit {
   getFirebaseData(_value: any) {
     try {
       this.spinner.show();
-      const location = _value.location === 'All' ? '' : _value.location;
-      const locationCondition = _value.location === 'All' ? '!=' : '==';
 
-      const firmActivity = _value.firmActivity === 'All' ? '' : _value.location;
-      const firmActivityCondition = _value.firmActivity === 'All' ? '!=' : '==';
+      if (
+        _value.location === 'All' &&
+        _value.firmActivity === 'All' &&
+        _value.paymentStatus === 'All'
+      ) {
+        console.log('All');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref.where('payment_date', '==', _value.date)
+        );
+      } else if (
+        _value.location === 'All' &&
+        _value.firmActivity === 'All' &&
+        _value.paymentStatus !== 'All'
+      ) {
+        console.log('location and firm');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('paymentStatus', '==', _value.paymentStatus)
+        );
+      } else if (
+        _value.location === 'All' &&
+        _value.firmActivity !== 'All' &&
+        _value.paymentStatus !== 'All'
+      ) {
+        console.log('location');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('firmActivity', '==', _value.firmActivity)
+            .where('paymentStatus', '==', _value.paymentStatus)
+        );
+      } else if (
+        _value.location === 'All' &&
+        _value.firmActivity !== 'All' &&
+        _value.paymentStatus === 'All'
+      ) {
+        console.log('location and payment');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('firmActivity', '==', _value.firmActivity)
+        );
+      } else if (
+        _value.location !== 'All' &&
+        _value.firmActivity === 'All' &&
+        _value.paymentStatus === 'All'
+      ) {
+        console.log('payment and firm');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('location', '==', _value.location)
+        );
+      } else if (
+        _value.location !== 'All' &&
+        _value.firmActivity === 'All' &&
+        _value.paymentStatus !== 'All'
+      ) {
+        console.log('payment and location');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('location', '==', _value.location)
+            .where('paymentStatus', '==', _value.paymentStatus)
+        );
+      } else if (
+        _value.location !== 'All' &&
+        _value.firmActivity !== 'All' &&
+        _value.paymentStatus === 'All'
+      ) {
+        console.log('payment and location');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('location', '==', _value.location)
+            .where('firmActivity', '==', _value.firmActivity)
+        );
+      } else {
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('location', '==', _value.location)
+            .where('firmActivity', '==', _value.firmActivity)
+            .where('paymentStatus', '==', _value.paymentStatus)
+        );
+      }
 
-      const paymentStatus =
-        _value.paymentStatus === 'All' ? '' : _value.location;
-      const paymentStatusCondition =
-        _value.paymentStatus === 'All' ? '!=' : '==';
-
-      this.companysCollection = this.fbstore.collection('companys', (ref) =>
-        ref
-          .where('location', locationCondition, location)
-          .where('payment_date', '==', _value.date)
-          .where('firmActivity', firmActivityCondition, firmActivity)
-          .where('paymentStatus', paymentStatusCondition, paymentStatus)
-      );
       this.getCompanys = this.companysCollection.snapshotChanges().pipe(
         map((actions) => {
           return actions.map((action) => {
@@ -371,6 +442,7 @@ export class DailySaleComponent implements OnInit {
               userEntry: data.userEntry,
               vehicleType: data.vehicleType,
               vehicleNos: data.vehicleNos,
+              payment_date: data.payment_date,
             };
           });
         })

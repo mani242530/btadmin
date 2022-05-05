@@ -57,7 +57,6 @@
                   bindLabel="name"
                   formControlName="firmActivity"
                   placeholder="Select"
-                  [(ngModel)]="selectedAll"
                 >
                   <ng-template ng-optgroup-tmp let-item="item">
                     {{ item || "Unnamed group" }}
@@ -188,6 +187,7 @@
           <thead>
             <tr>
               <th sortable="location" (sort)="onSort($event)">Location</th>
+              <th sortable="companyName" (sort)="onSort($event)">Date</th>
               <th sortable="companyName" (sort)="onSort($event)">
                 Company Name
               </th>
@@ -211,6 +211,12 @@
               <td>
                 <ngb-highlight
                   [result]="table.location"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.payment_date"
                   [term]="service.searchTerm"
                 ></ngb-highlight>
               </td>

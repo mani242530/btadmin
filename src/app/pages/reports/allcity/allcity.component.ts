@@ -326,131 +326,143 @@ export class AllCityComponent implements OnInit {
    * fetches the table from firebase
    */
   getFirebaseData(_value: any) {
-    // try {
-    this.spinner.show();
-    if (
-      _value.location === 'All' &&
-      _value.firmActivity === 'All' &&
-      _value.paymentStatus === 'All'
-    ) {
-      console.log('All');
-      this.companysCollection = this.fbstore.collection('companys', (ref) =>
-        ref.where('payment_date', '==', _value.date)
-      );
-    } else if (
-      _value.location === 'All' &&
-      _value.firmActivity === 'All' &&
-      _value.paymentStatus !== 'All'
-    ) {
-      console.log('location and firm');
-      this.companysCollection = this.fbstore.collection('companys', (ref) =>
-        ref
-          .where('payment_date', '==', _value.date)
-          .where('paymentStatus', '==', _value.paymentStatus)
-      );
-    } else if (
-      _value.location === 'All' &&
-      _value.firmActivity !== 'All' &&
-      _value.paymentStatus !== 'All'
-    ) {
-      console.log('location');
-      this.companysCollection = this.fbstore.collection('companys', (ref) =>
-        ref
-          .where('payment_date', '==', _value.date)
-          .where('firmActivity', '==', _value.firmActivity)
-          .where('paymentStatus', '==', _value.paymentStatus)
-      );
-    } else if (
-      _value.location === 'All' &&
-      _value.firmActivity !== 'All' &&
-      _value.paymentStatus === 'All'
-    ) {
-      console.log('location and payment');
-      this.companysCollection = this.fbstore.collection('companys', (ref) =>
-        ref
-          .where('payment_date', '==', _value.date)
-          .where('firmActivity', '==', _value.firmActivity)
-      );
-    } else if (
-      _value.location !== 'All' &&
-      _value.firmActivity === 'All' &&
-      _value.paymentStatus === 'All'
-    ) {
-      console.log('payment and firm');
-      this.companysCollection = this.fbstore.collection('companys', (ref) =>
-        ref
-          .where('payment_date', '==', _value.date)
-          .where('location', '==', _value.location)
-      );
-    } else if (
-      _value.location !== 'All' &&
-      _value.firmActivity === 'All' &&
-      _value.paymentStatus !== 'All'
-    ) {
-      console.log('payment and location');
-      this.companysCollection = this.fbstore.collection('companys', (ref) =>
-        ref
-          .where('payment_date', '==', _value.date)
-          .where('location', '==', _value.location)
-          .where('paymentStatus', '==', _value.paymentStatus)
-      );
-    } else {
-      this.companysCollection = this.fbstore.collection('companys', (ref) =>
-        ref
-          .where('payment_date', '==', _value.date)
-          .where('location', '==', _value.location)
-          .where('firmActivity', '==', _value.firmActivity)
-          .where('paymentStatus', '==', _value.paymentStatus)
-      );
-    }
-
-    this.getCompanys = this.companysCollection.snapshotChanges().pipe(
-      map((actions) => {
-        return actions.map((action) => {
-          const data = action.payload.doc.data();
-          return {
-            id: action.payload.doc.id,
-            aadharNumber: data.aadharNumber,
-            accountStatus: data.accountStatus,
-            alternateMobileNumber: data.alternateMobileNumber,
-            companyName: data.companyName,
-            drivingLicenseNumber: data.drivingLicenseNumber,
-            firmActivity: data.firmActivity,
-            language: data.language,
-            location: data.location,
-            mobileNumber: data.mobileNumber,
-            ownerName: data.ownerName,
-            passwordPin: data.passwordPin,
-            paymentStatus: data.paymentStatus,
-            referenceName: data.referenceName,
-            serviceProvidedLocation: data.serviceProvidedLocation,
-            userEntry: data.userEntry,
-            vehicleType: data.vehicleType,
-            vehicleNos: data.vehicleNos,
-            payment_date: data.payment_date,
-          };
-        });
-      })
-    );
-
-    this.getCompanys.subscribe((snapshot) => {
-      this.spinner.hide();
-      if (snapshot.length === 0) {
-        this.showTable = false;
-        this.norecordFound = true;
-        this.tableData = [];
+    try {
+      this.spinner.show();
+      if (
+        _value.location === 'All' &&
+        _value.firmActivity === 'All' &&
+        _value.paymentStatus === 'All'
+      ) {
+        console.log('All');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref.where('payment_date', '==', _value.date)
+        );
+      } else if (
+        _value.location === 'All' &&
+        _value.firmActivity === 'All' &&
+        _value.paymentStatus !== 'All'
+      ) {
+        console.log('location and firm');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('paymentStatus', '==', _value.paymentStatus)
+        );
+      } else if (
+        _value.location === 'All' &&
+        _value.firmActivity !== 'All' &&
+        _value.paymentStatus !== 'All'
+      ) {
+        console.log('location');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('firmActivity', '==', _value.firmActivity)
+            .where('paymentStatus', '==', _value.paymentStatus)
+        );
+      } else if (
+        _value.location === 'All' &&
+        _value.firmActivity !== 'All' &&
+        _value.paymentStatus === 'All'
+      ) {
+        console.log('location and payment');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('firmActivity', '==', _value.firmActivity)
+        );
+      } else if (
+        _value.location !== 'All' &&
+        _value.firmActivity === 'All' &&
+        _value.paymentStatus === 'All'
+      ) {
+        console.log('payment and firm');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('location', '==', _value.location)
+        );
+      } else if (
+        _value.location !== 'All' &&
+        _value.firmActivity === 'All' &&
+        _value.paymentStatus !== 'All'
+      ) {
+        console.log('payment and location');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('location', '==', _value.location)
+            .where('paymentStatus', '==', _value.paymentStatus)
+        );
+      } else if (
+        _value.location !== 'All' &&
+        _value.firmActivity !== 'All' &&
+        _value.paymentStatus === 'All'
+      ) {
+        console.log('payment and location');
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('location', '==', _value.location)
+            .where('firmActivity', '==', _value.firmActivity)
+        );
       } else {
-        this.norecordFound = false;
-        this.showTable = true;
-        this.service.tableDataSnapshot = snapshot;
-        this.tableData = snapshot;
-        this.totalData = snapshot.length;
+        this.companysCollection = this.fbstore.collection('companys', (ref) =>
+          ref
+            .where('payment_date', '==', _value.date)
+            .where('location', '==', _value.location)
+            .where('firmActivity', '==', _value.firmActivity)
+            .where('paymentStatus', '==', _value.paymentStatus)
+        );
       }
-    });
-    // } catch (error) {
-    //   this.spinner.hide();
-    //   this.toastr.error('Something went wrong. Please check after some time!');
-    // }
+
+      this.getCompanys = this.companysCollection.snapshotChanges().pipe(
+        map((actions) => {
+          return actions.map((action) => {
+            const data = action.payload.doc.data();
+            return {
+              id: action.payload.doc.id,
+              aadharNumber: data.aadharNumber,
+              accountStatus: data.accountStatus,
+              alternateMobileNumber: data.alternateMobileNumber,
+              companyName: data.companyName,
+              drivingLicenseNumber: data.drivingLicenseNumber,
+              firmActivity: data.firmActivity,
+              language: data.language,
+              location: data.location,
+              mobileNumber: data.mobileNumber,
+              ownerName: data.ownerName,
+              passwordPin: data.passwordPin,
+              paymentStatus: data.paymentStatus,
+              referenceName: data.referenceName,
+              serviceProvidedLocation: data.serviceProvidedLocation,
+              userEntry: data.userEntry,
+              vehicleType: data.vehicleType,
+              vehicleNos: data.vehicleNos,
+              payment_date: data.payment_date,
+            };
+          });
+        })
+      );
+
+      this.getCompanys.subscribe((snapshot) => {
+        this.spinner.hide();
+        if (snapshot.length === 0) {
+          this.showTable = false;
+          this.norecordFound = true;
+          this.tableData = [];
+        } else {
+          this.norecordFound = false;
+          this.showTable = true;
+          this.service.tableDataSnapshot = snapshot;
+          this.tableData = snapshot;
+          this.totalData = snapshot.length;
+        }
+      });
+    } catch (error) {
+      this.spinner.hide();
+      this.toastr.error('Something went wrong. Please check after some time!');
+    }
   }
 
   /**

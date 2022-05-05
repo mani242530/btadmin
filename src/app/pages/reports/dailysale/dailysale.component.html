@@ -173,6 +173,7 @@
           <thead>
             <tr>
               <th sortable="location" (sort)="onSort($event)">Location</th>
+              <th sortable="companyName" (sort)="onSort($event)">Date</th>
               <th sortable="companyName" (sort)="onSort($event)">
                 Company Name
               </th>
@@ -196,6 +197,12 @@
               <td>
                 <ngb-highlight
                   [result]="table.location"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.payment_date"
                   [term]="service.searchTerm"
                 ></ngb-highlight>
               </td>
