@@ -299,7 +299,7 @@ export class DailyUserComponent implements OnInit {
       date: ['', [Validators.required]],
       location: ['', [Validators.required]],
       paymentStatus: ['', [Validators.required]],
-      referenceName: ['', [Validators.required]],
+      referenceName: [''],
     });
   }
 

@@ -295,7 +295,8 @@ export class MonthlyUserComponent implements OnInit {
      */
     this.monthlyUserFilterForm = this.formBuilder.group({
       location: ['', [Validators.required]],
-      date: ['', [Validators.required]],
+      fromDate: ['', [Validators.required]],
+      toDate: ['', [Validators.required]],
       firmActivity: ['', [Validators.required]],
       paymentStatus: ['', [Validators.required]],
     });
@@ -337,7 +338,9 @@ export class MonthlyUserComponent implements OnInit {
       ) {
         console.log('All');
         this.companysCollection = this.fbstore.collection('companys', (ref) =>
-          ref.where('payment_date', '==', _value.date)
+          ref
+            .where('payment_date', '>=', _value.fromDate)
+            .where('payment_date', '<=', _value.toDate)
         );
       } else if (
         _value.location === 'All' &&
@@ -347,7 +350,8 @@ export class MonthlyUserComponent implements OnInit {
         console.log('location and firm');
         this.companysCollection = this.fbstore.collection('companys', (ref) =>
           ref
-            .where('payment_date', '==', _value.date)
+            .where('payment_date', '>=', _value.fromDate)
+            .where('payment_date', '<=', _value.toDate)
             .where('paymentStatus', '==', _value.paymentStatus)
         );
       } else if (
@@ -358,7 +362,8 @@ export class MonthlyUserComponent implements OnInit {
         console.log('location');
         this.companysCollection = this.fbstore.collection('companys', (ref) =>
           ref
-            .where('payment_date', '==', _value.date)
+            .where('payment_date', '>=', _value.fromDate)
+            .where('payment_date', '<=', _value.toDate)
             .where('firmActivity', '==', _value.firmActivity)
             .where('paymentStatus', '==', _value.paymentStatus)
         );
@@ -370,7 +375,8 @@ export class MonthlyUserComponent implements OnInit {
         console.log('location and payment');
         this.companysCollection = this.fbstore.collection('companys', (ref) =>
           ref
-            .where('payment_date', '==', _value.date)
+            .where('payment_date', '>=', _value.fromDate)
+            .where('payment_date', '<=', _value.toDate)
             .where('firmActivity', '==', _value.firmActivity)
         );
       } else if (
@@ -381,7 +387,8 @@ export class MonthlyUserComponent implements OnInit {
         console.log('payment and firm');
         this.companysCollection = this.fbstore.collection('companys', (ref) =>
           ref
-            .where('payment_date', '==', _value.date)
+            .where('payment_date', '>=', _value.fromDate)
+            .where('payment_date', '<=', _value.toDate)
             .where('location', '==', _value.location)
         );
       } else if (
@@ -392,7 +399,8 @@ export class MonthlyUserComponent implements OnInit {
         console.log('payment and location');
         this.companysCollection = this.fbstore.collection('companys', (ref) =>
           ref
-            .where('payment_date', '==', _value.date)
+            .where('payment_date', '>=', _value.fromDate)
+            .where('payment_date', '<=', _value.toDate)
             .where('location', '==', _value.location)
             .where('paymentStatus', '==', _value.paymentStatus)
         );
@@ -404,14 +412,16 @@ export class MonthlyUserComponent implements OnInit {
         console.log('payment and location');
         this.companysCollection = this.fbstore.collection('companys', (ref) =>
           ref
-            .where('payment_date', '==', _value.date)
+            .where('payment_date', '>=', _value.fromDate)
+            .where('payment_date', '<=', _value.toDate)
             .where('location', '==', _value.location)
             .where('firmActivity', '==', _value.firmActivity)
         );
       } else {
         this.companysCollection = this.fbstore.collection('companys', (ref) =>
           ref
-            .where('payment_date', '==', _value.date)
+            .where('payment_date', '>=', _value.fromDate)
+            .where('payment_date', '<=', _value.toDate)
             .where('location', '==', _value.location)
             .where('firmActivity', '==', _value.firmActivity)
             .where('paymentStatus', '==', _value.paymentStatus)
