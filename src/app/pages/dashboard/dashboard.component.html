@@ -340,6 +340,14 @@
       <div class="card-header">
         <div class="float-left">
           <h4 class="card-title mb-0">Location</h4>
+          <span class="badge bg-soft-success text-success"
+            >Total User(s) -
+            {{
+              totalUserCountCitywise === 0
+                ? totalRegisteredUsers
+                : totalUserCountCitywise
+            }}</span
+          >
         </div>
         <div class="location-width">
           <form class="needs-validation" [formGroup]="locationSearchForm">
@@ -376,7 +384,15 @@
   <div class="col-xl-6">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title mb-0">Active / InActive Users</h4>
+        <h4 class="card-title mb-0">Paid / Not Paid</h4>
+        <span class="badge bg-soft-success text-success"
+          >Total User(s) -
+          {{
+            totalUserCountCitywise === 0
+              ? totalRegisteredUsers
+              : totalUserCountCitywise
+          }}</span
+        >
       </div>
       <div class="card-body">
         <apx-chart

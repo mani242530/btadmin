@@ -65,6 +65,11 @@ export class DailySaleComponent implements OnInit {
   norecordFound = false;
   exportActive: boolean = false;
 
+  selectedDefaultLocation = 'All';
+  selectedDefaultDate = new Date().toISOString().slice(0, 10);
+  selectedDefaultFirmActivity = 'All';
+  selectedDefaultPaymentStatus = 'All';
+
   columnsToDisplay = [
     'location',
     'payment_date',

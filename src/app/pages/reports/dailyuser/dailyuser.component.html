@@ -27,6 +27,7 @@
                   bindLabel="name"
                   formControlName="location"
                   placeholder="Select"
+                  [(ngModel)]="selectedDefaultLocation"
                 >
                   <ng-template ng-optgroup-tmp let-item="item">
                     {{ item || "Unnamed group" }}
@@ -44,6 +45,7 @@
                   class="form-control"
                   id="validationCustom01"
                   formControlName="date"
+                  [(ngModel)]="selectedDefaultDate"
                 />
               </div>
             </div>
@@ -57,6 +59,7 @@
                   bindLabel="name"
                   formControlName="firmActivity"
                   placeholder="Select"
+                  [(ngModel)]="selectedDefaultFirmActivity"
                 >
                   <ng-template ng-optgroup-tmp let-item="item">
                     {{ item || "Unnamed group" }}
@@ -74,6 +77,7 @@
                   bindLabel="id"
                   formControlName="paymentStatus"
                   placeholder="Select"
+                  [(ngModel)]="selectedDefaultPaymentStatus"
                 >
                   <ng-template ng-optgroup-tmp let-item="item">
                     {{ item || "Unnamed group" }}

@@ -69,6 +69,7 @@ export class DashboardComponent implements OnInit {
   totalPaidUsers99 = 0;
   totalNotPaidUsers = 0;
   totalPaidUsers = 0;
+  totalUserCountCitywise = 0;
   filteredLocation!: Observable<any>;
   locations: string[] = [];
   selected = [];
@@ -351,7 +352,7 @@ export class DashboardComponent implements OnInit {
     this.transactionsBuy = transactionsBuy;
     this.transactionsSell = transactionsSell;
     this.simplePieChart = this.firmActivityChart();
-    this.donutChart = this.activeInactiveChart();
+    this.donutChart = this.paidNotPaidUsersChart();
     try {
       this.spinner.show();
       this.companysCollection = this.fbstore.collection(
@@ -434,7 +435,7 @@ export class DashboardComponent implements OnInit {
           ).length;
 
           this.simplePieChart = this.firmActivityChart();
-          this.donutChart = this.activeInactiveChart();
+          this.donutChart = this.paidNotPaidUsersChart();
         }
       });
     } catch (error) {
@@ -478,11 +479,11 @@ export class DashboardComponent implements OnInit {
   /**
    * Fetches Firm Activity chart
    */
-  activeInactiveChart() {
+  paidNotPaidUsersChart() {
     const donutChart: ChartType = {
       chart: { height: 320, type: 'donut' },
-      series: [this.totalActiveUsers, this.totalInactiveUsers],
-      labels: ['Active', 'InActive'],
+      series: [this.totalPaidUsers, this.totalNotPaidUsers],
+      labels: ['Paid', 'Not Paid'],
       colors: ['#2ab57d', '#fd625e'],
       legend: {
         show: !0,
@@ -542,9 +543,11 @@ export class DashboardComponent implements OnInit {
       this.filteredLocation.subscribe((snapshot) => {
         if (snapshot.length === 0) {
           console.log('User NOT found');
+          this.totalUserCountCitywise = snapshot.length;
         } else {
           console.log(snapshot[0]);
           console.log('User found in db' + snapshot[0].id);
+          this.totalUserCountCitywise = snapshot.length;
           this.totalBooking = snapshot.filter(
             (obj: any) => obj.firmActivity === 'Booking'
           ).length;
@@ -560,7 +563,17 @@ export class DashboardComponent implements OnInit {
           this.totalFreightForwarders = snapshot.filter(
             (obj: any) => obj.firmActivity === 'Freight Forwarders'
           ).length;
+
+          this.totalNotPaidUsers = snapshot.filter(
+            (obj: any) => obj.paymentStatus === 'Not Paid'
+          ).length;
+
+          this.totalPaidUsers = snapshot.filter(
+            (obj: any) => obj.paymentStatus === 'Paid'
+          ).length;
+
           this.simplePieChart = this.firmActivityChart();
+          this.donutChart = this.paidNotPaidUsersChart();
         }
       });
     }

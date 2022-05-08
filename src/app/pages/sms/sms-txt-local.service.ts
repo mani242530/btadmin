@@ -29,13 +29,11 @@ export class TextLocalSmsService {
   }
 
   async sendSMS(toNumbers: any[], rawMessage: string | number | boolean) {
-    
-
-    let sender = encodeURIComponent('BHARATTRANSPORT');
+    let sender = encodeURIComponent('PRIVID');
     let encoded_message = encodeURIComponent(rawMessage);
     let data = {
       url: 'https://api.textlocal.in/send/?',
-      apikey: 'NzQzMjcxNzE2Mjc3NjQ3YTMzMzk2YTUxNTg0ODM3NGI=',
+      apikey: 'MzE2ZDc4Nzc2NjMyNGUzMzUwNDg1NzQ4MzY3NDRmN2E=',
       numbers: toNumbers.join(','),
       sender: sender,
       message: encoded_message,

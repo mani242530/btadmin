@@ -11,10 +11,11 @@ import {
 } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Company } from 'src/app/core/models/companys';
 import { AlertColor } from '../components/alerts/alerts.model';
+import { UpdatesService } from './updates.service';
 
 @Component({
   selector: 'app-updates',
@@ -58,6 +59,7 @@ export class UpdatesComponent implements OnInit {
   docid!: string;
   selectedFirmActivity!: string;
   filterModifyUser!: Observable<any>;
+  subscription!: Subscription;
 
   firmActivitys = [
     'Freight Forwarders',
@@ -304,7 +306,8 @@ export class UpdatesComponent implements OnInit {
     public formBuilder: FormBuilder,
     private fbstore: AngularFirestore,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private updatesService: UpdatesService
   ) {}
 
   ngOnInit(): void {
@@ -628,100 +631,57 @@ export class UpdatesComponent implements OnInit {
   /**
    * On submit updates form
    */
-  doModify() {
+  async doModify() {
     const mobileNo = '+91' + this.updatesForm.get('mobileNumber')!.value;
-    const companyobj: Company = {
-      companyName: this.updatesForm.get('companyName')!.value,
-      ownerName: this.updatesForm.get('ownerName')!.value,
-      firmActivity: this.updatesForm.get('firmActivity')!.value,
-      vehicleType: this.updatesForm.get('vehicleType')!.value,
-      mobileNumber: '+91' + this.updatesForm.get('mobileNumber')!.value,
-      alternateMobileNumber:
-        '+91' + this.updatesForm.get('alternateMobileNumber')!.value,
-      location: this.updatesForm.get('location')!.value,
-      serviceProvidedLocation: this.updatesForm.get('serviceProvidedLocation')!
-        .value,
-      referenceName: this.updatesForm.get('referenceName')!.value,
-      language: this.updatesForm.get('language')!.value,
-      vehicleNos: this.updatesForm.get('vehicleNos')!.value,
-      aadharNumber: this.updatesForm.get('aadharNumber')!.value,
-      drivingLicenseNumber: this.updatesForm.get('drivingLicenseNumber')!.value,
-      paymentStatus: this.updatesForm.get('paymentStatus')!.value,
-      accountStatus: this.updatesForm.get('accountStatus')!.value,
-      passwordPin: this.updatesForm.get('passwordPin')!.value,
-    };
 
-    this.modifyCompanysCollection = this.fbstore.collection('companys', (ref) =>
-      ref.where('mobileNumber', '==', mobileNo)
-    );
-    this.modifyCompanysCollection
-      .snapshotChanges()
-      .pipe(
-        map((actions) =>
-          actions.map((action) => {
-            const data = action.payload.doc.data() as Company;
-            const id = action.payload.doc.id;
-            return { id };
-            // this.fbstore.doc('companys/' + id).update(companyobj);
-            // this.fbstore.collection('companys').doc(id).update(companyobj);
-          })
-        )
-      )
-      .subscribe((_doc: any) => {
-        console.log(_doc);
-        let id = _doc[0].id; //first result of query [0]
-        this.updateMethod(id, companyobj);
-      });
-    // this.filterModifyUser.subscribe((snapshot: any) => {
-    // let id = _doc[0].id; //first result of query [0]
-    // this.updateMethod(id, companyobj);
-    // this.fbstore
-    //   .doc(`companys/${id}`)
-    //   .update(companyobj)
-    //   .then(() => {
-    //     console.log();
-    //     // eslint-disable-next-line no-redeclare
-    //     this.toastr.success('Updated successfully in db!', 'Great Job!');
-    //     this.showUpdateForm = false;
-    //     this.submitted = false;
-    //     this.updatedValue = true;
-    //     this.updatesForm.reset();
-    //     this.searchForm.reset();
-    //   })
-    //   .catch((error) => console.log(error));
-    // });
-  }
-  /* Update Data
-   */
-  updateMethod(id: string, companyobj: Partial<Company>) {
-    try {
-      this.fbstore
-        .doc('companys/' + id)
-        .update(companyobj)
-        .then(() => {
-          this.toastr.success('Updated successfully in db!', 'Great Job!');
-          this.showUpdateForm = false;
-          this.submitted = false;
-          this.updatedValue = true;
-          this.updatesForm.reset();
-          this.searchForm.reset();
-        })
-        .catch((error) => {
-          // The document probably doesn't exist.
-          console.error('Error updating document: ', error);
-        });
-    } catch (error) {
-      console.error('Error updating document: ', error);
-      // this.toastr.success('Delete is not done in db!', 'Something went wrong!');
+    if (this.updatesForm.valid) {
+      const companyObj = {
+        companyName: this.updatesForm.get('companyName')!.value,
+        ownerName: this.updatesForm.get('ownerName')!.value,
+        firmActivity: this.updatesForm.get('firmActivity')!.value,
+        vehicleType: this.updatesForm.get('vehicleType')!.value,
+        mobileNumber: '+91' + this.updatesForm.get('mobileNumber')!.value,
+        alternateMobileNumber:
+          '+91' + this.updatesForm.get('alternateMobileNumber')!.value,
+        location: this.updatesForm.get('location')!.value,
+        serviceProvidedLocation: this.updatesForm.get(
+          'serviceProvidedLocation'
+        )!.value,
+        referenceName: this.updatesForm.get('referenceName')!.value,
+        language: this.updatesForm.get('language')!.value,
+        vehicleNos: this.updatesForm.get('vehicleNos')!.value,
+        aadharNumber: this.updatesForm.get('aadharNumber')!.value,
+        drivingLicenseNumber: this.updatesForm.get('drivingLicenseNumber')!
+          .value,
+        paymentStatus: this.updatesForm.get('paymentStatus')!.value,
+        accountStatus: this.updatesForm.get('accountStatus')!.value,
+        passwordPin: this.updatesForm.get('passwordPin')!.value,
+      };
+
+      try {
+        await this.fbstore
+          .doc('companys/' + this.docid)
+          .update(companyObj)
+          .then(() => {
+            this.toastr.success('Updated successfully in db!', 'Great Job!');
+            this.showUpdateForm = false;
+            this.submitted = false;
+            this.updatedValue = true;
+            this.updatesForm.reset();
+            this.searchForm.reset();
+          });
+      } catch (error) {
+        console.error('Error updating document: ', error);
+      }
     }
   }
   /* Delete Data remove
    */
-  deleteData() {
+  async deleteData() {
     console.log('delete');
     try {
       console.log(this.docid);
-      this.fbstore
+      await this.fbstore
         .doc('companys/' + this.docid)
         .delete()
         .then(() => {

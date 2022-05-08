@@ -48,12 +48,20 @@ function sort(tables: Users[], column: SortColumn, direction: string): Users[] {
  */
 function matches(table: Users, term: string, pipe: PipeTransform) {
   return (
-    (table && table.companyName.toLowerCase().includes(term)) ||
-    (table && table.ownerName.toLowerCase().includes(term)) ||
-    (table && table.firmActivity.toLowerCase().includes(term)) ||
-    (table && table.mobileNumber.includes(term)) ||
-    (table && table.location.toLowerCase().includes(term)) ||
-    (table && table.paymentStatus.toLowerCase().includes(term))
+    (table &&
+      table.companyName &&
+      table.companyName.toLowerCase().includes(term)) ||
+    (table &&
+      table.ownerName &&
+      table.ownerName.toLowerCase().includes(term)) ||
+    (table &&
+      table.firmActivity &&
+      table.firmActivity.toLowerCase().includes(term)) ||
+    (table && table.mobileNumber && table.mobileNumber.includes(term)) ||
+    (table && table.location && table.location.toLowerCase().includes(term)) ||
+    (table &&
+      table.paymentStatus &&
+      table.paymentStatus.toLowerCase().includes(term))
   );
 }
 

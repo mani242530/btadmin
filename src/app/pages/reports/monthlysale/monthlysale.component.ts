@@ -65,6 +65,12 @@ export class MonthlySaleComponent implements OnInit {
   norecordFound = false;
   exportActive: boolean = false;
 
+  selectedDefaultLocation = 'All';
+  selectedDefaultFromDate = new Date().toISOString().slice(0, 10);
+  selectedDefaultToDate = new Date().toISOString().slice(0, 10);
+  selectedDefaultFirmActivity = 'All';
+  selectedDefaultPaymentStatus = 'All';
+
   columnsToDisplay = [
     'location',
     'payment_date',
