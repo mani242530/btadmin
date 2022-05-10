@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({ providedIn: 'root' })
 
@@ -7,7 +8,10 @@ import { Injectable } from '@angular/core';
  * Text Local Sms - Service Component
  */
 export class TextLocalSmsService {
-  constructor(private __httpClient: HttpClient) {}
+  constructor(
+    private __httpClient: HttpClient,
+    private toastr: ToastrService
+  ) {}
 
   async callApi(data: any) {
     const textUrl = `${data.url}apikey=${data.apikey}&numbers=${data.numbers}&sender=${data.sender}&message=${data.message}`;
@@ -18,10 +22,12 @@ export class TextLocalSmsService {
     let response = await this.__httpClient.get<any>(textUrl).subscribe({
       next: (result: any) => {
         console.log(`SMS API: ${URL} RESULT =`, result);
+        this.toastr.success('Sms sent successfully!', 'Great Job!');
         return result;
       },
       error: (err: { message: any }) => {
         console.log(`SMS API: ${URL} ERROR =`, err.message);
+        this.toastr.error('Sms not sent successfully!', 'Great Job!');
         return err;
       },
     });

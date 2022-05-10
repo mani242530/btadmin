@@ -368,6 +368,7 @@ export class DashboardComponent implements OnInit {
               paymentStatus: data.paymentStatus,
               accountStatus: data.accountStatus,
               firmActivity: data.firmActivity,
+              paymentAmount: data.paymentAmount
             };
           });
         })
@@ -419,11 +420,11 @@ export class DashboardComponent implements OnInit {
           ).length;
 
           this.totalPaidUsers999 = snapshot.filter(
-            (obj: any) => obj.firmActivity !== 'Driver'
+            (obj: any) => obj.paymentAmount === 99900
           ).length;
 
           this.totalPaidUsers99 = snapshot.filter(
-            (obj: any) => obj.firmActivity === 'Driver'
+            (obj: any) => obj.paymentAmount === 9900
           ).length;
 
           this.totalNotPaidUsers = snapshot.filter(

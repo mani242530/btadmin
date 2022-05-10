@@ -1,5 +1,12 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -11,6 +18,7 @@ import { map } from 'rxjs/operators';
 import { usersSortableDirective, SortEvent } from './users-sortable.directive';
 import { Users } from './users.model';
 import { UsersService } from './users.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-users',
@@ -38,6 +46,37 @@ export class UsersComponent implements OnInit {
 
   tableData!: Users[];
   totalData!: number;
+
+  exportActive: boolean = false;
+
+  @ViewChild('TABLE')
+  table!: ElementRef;
+
+  columnsToDisplay = [
+    'aadharNumber',
+    'accountStatus',
+    'alternateMobileNumber',
+    'companyName',
+    'drivingLicenseNumber',
+    'firmActivity',
+    'language',
+    'location',
+    'mobileNumber',
+    'ownerName',
+    'passwordPin',
+    'paymentAmount',
+    'paymentStatus',
+    'payment_date',
+    'payment_id',
+    'referenceName',
+    'registeredDate',
+    'serviceProvidedLocation',
+    'signInCount',
+    'updatedDate',
+    'userEntry',
+    'vehicleNos',
+    'vehicleType',
+  ];
 
   constructor(
     public service: UsersService,
@@ -98,9 +137,15 @@ export class UsersComponent implements OnInit {
               mobileNumber: data.mobileNumber,
               ownerName: data.ownerName,
               passwordPin: data.passwordPin,
+              paymentAmount: data.paymentAmount,
               paymentStatus: data.paymentStatus,
+              payment_date: data.payment_date,
+              payment_id: data.payment_id,
               referenceName: data.referenceName,
+              registeredDate: data.registeredDate,
               serviceProvidedLocation: data.serviceProvidedLocation,
+              signInCount: data.signInCount,
+              updatedDate: data.updatedDate,
               userEntry: data.userEntry,
               vehicleType: data.vehicleType,
               vehicleNos: data.vehicleNos,
@@ -139,5 +184,21 @@ export class UsersComponent implements OnInit {
     });
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
+  }
+  /**
+   * Export table data
+   * @param param sort the column
+   *
+   */
+  export() {
+    this.exportActive = true;
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+      this.table.nativeElement
+    );
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, 'companys.xlsx');
   }
 }

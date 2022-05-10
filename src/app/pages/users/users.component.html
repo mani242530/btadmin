@@ -5,14 +5,21 @@
 ></app-pagetitle>
 <!-- end page title -->
 
-<div class="row">
+<div class="row" #TABLE>
   <div class="col-12">
     <div class="card">
       <div class="card-header">
         <h4 class="card-title">Default Users Datatable</h4>
         <p class="card-title-desc">Here is registered users list datatable.</p>
+        <button
+          style="font-size: 14px; font-weight: bold; float: right"
+          class="btn btn-primary mt-2 me-2 waves-effect waves-light"
+          (click)="export()"
+        >
+          Export as Excel
+        </button>
       </div>
-      <div class="card-body">
+      <div class="card-body" style="overflow: hidden">
         <div class="row mb-md-2">
           <div class="col-sm-12 col-md-6">
             <div class="dataTables_length" id="tickets-table_length">
@@ -28,6 +35,7 @@
                   <option [ngValue]="1000">1000</option>
                   <option [ngValue]="5000">5000</option>
                   <option [ngValue]="10000">10000</option>
+                  <option [ngValue]="25000">25000</option>
                 </select>
                 entries</label
               >
@@ -54,33 +62,68 @@
         </div>
 
         <table
+          #table
           id="datatable"
           class="table table-bordered dt-responsive nowrap w-100 datatables"
         >
           <thead>
             <tr>
+              <th sortable="aadharNumber" (sort)="onSort($event)">
+                aadharNumber
+              </th>
+              <th sortable="accountStatus" (sort)="onSort($event)">
+                accountStatus
+              </th>
+              <th sortable="alternateMobileNumber" (sort)="onSort($event)">
+                alternateMobileNumber
+              </th>
               <th sortable="companyName" (sort)="onSort($event)">
-                Company Name
+                companyName
               </th>
-              <th sortable="ownerName" (sort)="onSort($event)">Owner Name</th>
+              <th sortable="drivingLicenseNumber" (sort)="onSort($event)">
+                drivingLicenseNumber
+              </th>
               <th sortable="firmActivity" (sort)="onSort($event)">
-                Firm Activity
+                firmActivity
               </th>
+              <th sortable="language" (sort)="onSort($event)">language</th>
+              <th sortable="location" (sort)="onSort($event)">location</th>
               <th sortable="mobileNumber" (sort)="onSort($event)">
-                Mobile Number
+                mobileNumber
               </th>
-              <th sortable="location" (sort)="onSort($event)">Location</th>
-              <th sortable="referenceName" (sort)="onSort($event)">
-                Password Pin
+              <th sortable="ownerName" (sort)="onSort($event)">ownerName</th>
+              <th sortable="passwordPin" (sort)="onSort($event)">
+                passwordPin
+              </th>
+              <th sortable="paymentAmount" (sort)="onSort($event)">
+                paymentAmount
               </th>
               <th sortable="paymentStatus" (sort)="onSort($event)">
-                Payment Status
+                paymentStatus
               </th>
-              <th sortable="accountStatus" (sort)="onSort($event)">
-                Account Status
+              <th sortable="payment_date" (sort)="onSort($event)">
+                payment_date
               </th>
-              <th sortable="accountStatus" (sort)="onSort($event)">
-                User Entry
+              <th sortable="payment_id" (sort)="onSort($event)">payment_id</th>
+              <th sortable="referenceName" (sort)="onSort($event)">
+                referenceName
+              </th>
+              <th sortable="registeredDate" (sort)="onSort($event)">
+                registeredDate
+              </th>
+              <th sortable="serviceProvidedLocation" (sort)="onSort($event)">
+                serviceProvidedLocation
+              </th>
+              <th sortable="signInCount" (sort)="onSort($event)">
+                signInCount
+              </th>
+              <th sortable="updatedDate" (sort)="onSort($event)">
+                updatedDate
+              </th>
+              <th sortable="userEntry" (sort)="onSort($event)">userEntry</th>
+              <th sortable="vehicleNos" (sort)="onSort($event)">vehicleNos</th>
+              <th sortable="vehicleType" (sort)="onSort($event)">
+                vehicleType
               </th>
             </tr>
           </thead>
@@ -88,44 +131,7 @@
             <tr>
               <td>
                 <ngb-highlight
-                  [result]="table.companyName"
-                  [term]="service.searchTerm"
-                ></ngb-highlight>
-              </td>
-              <td>
-                <ngb-highlight
-                  [result]="table.ownerName"
-                  [term]="service.searchTerm"
-                >
-                </ngb-highlight>
-              </td>
-              <td>
-                <ngb-highlight
-                  [result]="table.firmActivity"
-                  [term]="service.searchTerm"
-                ></ngb-highlight>
-              </td>
-              <td>
-                <ngb-highlight
-                  [result]="table.mobileNumber"
-                  [term]="service.searchTerm"
-                ></ngb-highlight>
-              </td>
-              <td>
-                <ngb-highlight
-                  [result]="table.location"
-                  [term]="service.searchTerm"
-                ></ngb-highlight>
-              </td>
-              <td>
-                <ngb-highlight
-                  [result]="table.passwordPin"
-                  [term]="service.searchTerm"
-                ></ngb-highlight>
-              </td>
-              <td>
-                <ngb-highlight
-                  [result]="table.paymentStatus"
+                  [result]="table.aadharNumber"
                   [term]="service.searchTerm"
                 ></ngb-highlight>
               </td>
@@ -137,7 +143,130 @@
               </td>
               <td>
                 <ngb-highlight
+                  [result]="table.alternateMobileNumber"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+
+              <td>
+                <ngb-highlight
+                  [result]="table.companyName"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.drivingLicenseNumber"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+
+              <td>
+                <ngb-highlight
+                  [result]="table.firmActivity"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.language"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.location"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.mobileNumber"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.ownerName"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.passwordPin"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.paymentAmount"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.paymentStatus"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.payment_date"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.payment_id"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.referenceName"
+                  [term]="service.searchTerm"
+                >
+                </ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.registeredDate"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.serviceProvidedLocation.toString()"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.signInCount"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.updatedDate"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
                   [result]="table.userEntry"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.vehicleNos"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.vehicleType.toString()"
                   [term]="service.searchTerm"
                 ></ngb-highlight>
               </td>

@@ -16,4 +16,5 @@ export class Company {
   aadharNumber?: string;
   drivingLicenseNumber?: string;
   passwordPin?: string;
+  paymentAmount?: number;
 }
