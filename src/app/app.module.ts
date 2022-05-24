@@ -70,7 +70,7 @@ export function createTranslateLoader(http: HttpClient): any {
     NgSelectModule,
     ExtrapagesModule,
     ToastrModule.forRoot({
-      timeOut: 10000,
+      timeOut: 1000,
       positionClass: 'toast-top-center',
       preventDuplicates: true,
     }), // ToastrModule added

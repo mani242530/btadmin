@@ -50,6 +50,14 @@
             >
               Search
             </button>
+            <!-- <button
+              class="btn btn-primary"
+              type="submit"
+              (click)="onSubmitUpdateData(searchForm.value)"
+              [disabled]="!searchForm.valid"
+            >
+              Update
+            </button> -->
           </div>
         </form>
       </div>
@@ -426,6 +434,26 @@
                 >
                   <span *ngIf="form.passwordPin.errors?.required"
                     >Please provide a valid password pin.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" *ngIf="userPaidFlag">
+              <div class="mb-3">
+                <label for="validationCustom03">Payment Date</label
+                ><span class="required-field"></span>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="validationCustom01"
+                  formControlName="payment_date"
+                />
+                <div
+                  *ngIf="submit && form.paymentDate.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.paymentDate.errors?.required"
+                    >Please provide a valid Payment Date.</span
                   >
                 </div>
               </div>

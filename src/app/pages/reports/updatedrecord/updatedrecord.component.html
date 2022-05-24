@@ -1,0 +1,304 @@
+<!-- start page title -->
+<app-pagetitle
+  title="Updated Record Report"
+  [breadcrumbItems]="breadCrumbItems"
+></app-pagetitle>
+<!-- end page title -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Filter Validation - Form</h4>
+        <p class="card-title-desc">
+          Provide valuable, actionable feedback to your users with HTML5 form
+          validation–available in all our supported browsers.
+        </p>
+      </div>
+      <div class="card-body">
+        <form class="needs-validation" [formGroup]="updatedRecordFilterForm">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="validationCustom01">Location</label
+                ><span class="required-field"></span>
+                <ng-select
+                  [items]="locations"
+                  bindLabel="name"
+                  formControlName="location"
+                  placeholder="Select"
+                  [(ngModel)]="selectedDefaultLocation"
+                >
+                  <ng-template ng-optgroup-tmp let-item="item">
+                    {{ item || "Unnamed group" }}
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="validationCustom01">From Update Date</label
+                ><span class="required-field"></span>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="validationCustom01"
+                  formControlName="fromUpdateDate"
+                  [(ngModel)]="selectedDefaultFromUpdateDate"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="validationCustom01">To Update Date</label
+                ><span class="required-field"></span>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="validationCustom01"
+                  formControlName="toUpdateDate"
+                  [(ngModel)]="selectedDefaultToUpdateDate"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label for="validationCustom01">Firm Activity </label
+                ><span class="required-field"></span>
+                <ng-select
+                  [items]="firmActivitys"
+                  bindLabel="name"
+                  formControlName="firmActivity"
+                  placeholder="Select"
+                  [(ngModel)]="selectedDefaultFirmActivity"
+                >
+                  <ng-template ng-optgroup-tmp let-item="item">
+                    {{ item || "Unnamed group" }}
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label for="validationCustom01">Payment Status</label
+                ><span class="required-field"></span>
+                <ng-select
+                  [items]="paymentStatusArr"
+                  bindLabel="id"
+                  formControlName="paymentStatus"
+                  placeholder="Select"
+                  [(ngModel)]="selectedDefaultPaymentStatus"
+                >
+                  <ng-template ng-optgroup-tmp let-item="item">
+                    {{ item || "Unnamed group" }}
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              (click)="onSubmitSearch(updatedRecordFilterForm.value)"
+              [disabled]="!updatedRecordFilterForm.valid"
+            >
+              Filter
+            </button>
+          </div>
+        </form>
+
+        <p
+          *ngIf="norecordFound"
+          class="card-title-desc mt-3"
+          style="color: #fd625e; font-size: 16px; font-weight: bold"
+        >
+          No records found.
+        </p>
+      </div>
+    </div>
+    <!-- end card -->
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
+
+<div class="row" #TABLE *ngIf="showTable">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Monthly User Report Datatable</h4>
+        <p class="card-title-desc">Here is all city users list datatable.</p>
+        <button
+          style="font-size: 14px; font-weight: bold; float: right"
+          class="btn btn-primary mt-2 me-2 waves-effect waves-light"
+          (click)="export()"
+        >
+          Export as Excel
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="row mb-md-2">
+          <div class="col-sm-12 col-md-6">
+            <div class="dataTables_length" id="tickets-table_length">
+              <label class="d-inline-flex align-items-center"
+                >Show
+                <select
+                  name="tickets-table_length"
+                  aria-controls="tickets-table"
+                  name="pageSize"
+                  [(ngModel)]="service.pageSize"
+                  class="form-control form-control-sm mx-2"
+                >
+                  <option [ngValue]="100">100</option>
+                  <option [ngValue]="500">500</option>
+                  <option [ngValue]="1000">1000</option>
+                </select>
+                entries</label
+              >
+            </div>
+          </div>
+          <!-- Search -->
+          <div class="col-sm-12 col-md-6">
+            <div
+              id="tickets-table_filter"
+              class="dataTables_filter text-md-end"
+            >
+              <label class="d-inline-flex align-items-center"
+                >Search:
+                <input
+                  type="text"
+                  name="searchTerm"
+                  class="form-control form-control-sm ms-2"
+                  aria-controls="tickets-table"
+                  [(ngModel)]="service.searchTerm"
+              /></label>
+            </div>
+          </div>
+          <!-- End search -->
+        </div>
+
+        <table
+          #table
+          id="datatable"
+          class="table table-bordered dt-responsive nowrap w-100 datatables"
+        >
+          <thead>
+            <tr>
+              <th sortable="location" (sort)="onSort($event)">Location</th>
+              <th sortable="companyName" (sort)="onSort($event)">
+                Company Name
+              </th>
+              <th sortable="ownerName" (sort)="onSort($event)">Owner Name</th>
+              <th sortable="firmActivity" (sort)="onSort($event)">
+                Firm Activity
+              </th>
+              <th sortable="mobileNumber" (sort)="onSort($event)">
+                Mobile Number
+              </th>
+              <th sortable="paymentStatus" (sort)="onSort($event)">
+                Payment Status
+              </th>
+              <th sortable="paymentStatus" (sort)="onSort($event)">
+                Reference Name
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
+            <tr>
+              <td>
+                <ngb-highlight
+                  [result]="table.location"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.companyName"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.ownerName"
+                  [term]="service.searchTerm"
+                >
+                </ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.firmActivity"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.mobileNumber"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.paymentStatus"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.referenceName"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row justify-content-md-between align-items-md-center mt-2">
+          <div class="col-sm-12 col-md-12">
+            <div
+              class="dataTables_info mb-2"
+              id="tickets-table_info"
+              role="status"
+              aria-live="polite"
+            >
+              Showing
+              {{ service.startIndex }} to {{ service.endIndex }} of
+              {{ service.totalRecords }}
+              entries
+            </div>
+          </div>
+        </div>
+        <div
+          class="row justify-content-md-between align-items-md-center mt-2"
+          style="overflow: auto"
+        >
+          <!-- Pagination -->
+          <div class="col-sm-12 col-md-12">
+            <div class="text-md-right float-md-end pagination-rounded">
+              <ngb-pagination
+                [collectionSize]="(total$ | async)!"
+                [(page)]="service.page"
+                [pageSize]="service.pageSize"
+              >
+              </ngb-pagination>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end col -->
+</div>
+<!-- end row -->
+
+<ngx-spinner
+  type="ball-clip-rotate"
+  [fullScreen]="true"
+  size="medium"
+  color="#ffffff"
+></ngx-spinner>

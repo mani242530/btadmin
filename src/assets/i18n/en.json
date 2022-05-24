@@ -105,7 +105,8 @@
         "MONTHLYSALE": "Monthly Sale Report",
         "DAILYUSER": "Daily User Report",
         "MONTHLYUSER": "Monthly User Report",
-        "ALLCITY": "All City Report"
+        "ALLCITY": "All City Report",
+        "UPDATEDRECORD": "Updated Record"
       }
     },
     "UPDATES": {

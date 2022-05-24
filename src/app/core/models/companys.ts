@@ -17,4 +17,5 @@ export class Company {
   drivingLicenseNumber?: string;
   passwordPin?: string;
   paymentAmount?: number;
+  payment_date?: any;
 }

@@ -44,10 +44,12 @@ export class UpdatesComponent implements OnInit {
   searchForm!: FormGroup;
 
   disabledFlag = true;
+  userPaidFlag = false;
   checkFirmActivityIsDriver = false;
   checkFirmActivityIsOwner = false;
   showUpdateForm = false;
   updatedValue = true;
+  disabled = true;
 
   CountryCode: any = '+91';
   filteredUser!: Observable<any>;
@@ -60,6 +62,8 @@ export class UpdatesComponent implements OnInit {
   selectedFirmActivity!: string;
   filterModifyUser!: Observable<any>;
   subscription!: Subscription;
+
+  selectedDefaultPaymentDate = new Date().toISOString().slice(0, 10);
 
   firmActivitys = [
     'Freight Forwarders',
@@ -380,6 +384,7 @@ export class UpdatesComponent implements OnInit {
       paymentStatus: ['', [Validators.required]],
       accountStatus: ['', [Validators.required]],
       passwordPin: ['', [Validators.required]],
+      payment_date: ['', [Validators.required]],
     });
   }
   /**
@@ -388,6 +393,7 @@ export class UpdatesComponent implements OnInit {
   setFirmActivityValidators() {
     const companyNameControl = this.updatesForm.get('companyName')!;
     const vehicleNosControl = this.updatesForm.get('vehicleNos')!;
+
     const drivingLicenseNumberControl = this.updatesForm.get(
       'drivingLicenseNumber'
     )!;
@@ -454,6 +460,7 @@ export class UpdatesComponent implements OnInit {
               accountStatus: data['accountStatus'],
               language: data['language'],
               passwordPin: data['passwordPin'],
+              payment_date: data['payment_date'],
             };
           });
         })
@@ -468,6 +475,9 @@ export class UpdatesComponent implements OnInit {
           this.onFirmActivityValue(snapshot[0]);
           this.docid = snapshot[0].id;
           this.showUpdateForm = true;
+
+          this.userPaidFlag =
+            snapshot[0]['paymentStatus'] === 'Paid' ? true : false;
 
           let modifyMobileNumber;
           let modifyAlternateNumber;
@@ -487,6 +497,8 @@ export class UpdatesComponent implements OnInit {
           } else {
             modifyAlternateNumber = snapshot[0]['alternateMobileNumber'];
           }
+
+          const paymentDate = new Date(snapshot[0]['payment_date']);
 
           this.updatesForm.controls['companyName'].setValue(
             snapshot[0]['companyName']
@@ -535,6 +547,9 @@ export class UpdatesComponent implements OnInit {
           );
           this.updatesForm.controls['passwordPin'].setValue(
             snapshot[0]['passwordPin']
+          );
+          this.updatesForm.controls['payment_date'].setValue(
+            paymentDate.toISOString().slice(0, 10)
           );
         } else {
           this.spinner.hide();
@@ -625,7 +640,8 @@ export class UpdatesComponent implements OnInit {
     if (this.updatesForm.invalid) {
       return;
     } else {
-      this.doModify();
+      // this.doModify();
+      this.onSubmitUpdateData();
     }
   }
   /**
@@ -694,6 +710,78 @@ export class UpdatesComponent implements OnInit {
     } catch (error) {
       console.error('Error removing document: ', error);
       // this.toastr.success('Delete is not done in db!', 'Something went wrong!');
+    }
+  }
+
+  onSubmitUpdateData() {
+    const mobileNumber =
+      this.CountryCode + this.updatesForm.get('mobileNumber')!.value;
+    if (this.updatesForm.valid) {
+      const companyObj = {
+        companyName: this.updatesForm.get('companyName')!.value,
+        ownerName: this.updatesForm.get('ownerName')!.value,
+        firmActivity: this.updatesForm.get('firmActivity')!.value,
+        vehicleType: this.updatesForm.get('vehicleType')!.value,
+        mobileNumber: '+91' + this.updatesForm.get('mobileNumber')!.value,
+        alternateMobileNumber:
+          '+91' + this.updatesForm.get('alternateMobileNumber')!.value,
+        location: this.updatesForm.get('location')!.value,
+        serviceProvidedLocation: this.updatesForm.get(
+          'serviceProvidedLocation'
+        )!.value,
+        referenceName: this.updatesForm.get('referenceName')!.value,
+        language: this.updatesForm.get('language')!.value,
+        vehicleNos: this.updatesForm.get('vehicleNos')!.value,
+        aadharNumber: this.updatesForm.get('aadharNumber')!.value,
+        drivingLicenseNumber: this.updatesForm.get('drivingLicenseNumber')!
+          .value,
+        paymentStatus: this.updatesForm.get('paymentStatus')!.value,
+        accountStatus: this.updatesForm.get('accountStatus')!.value,
+        passwordPin: this.updatesForm.get('passwordPin')!.value,
+      };
+      const COMPANY_ITEMS = this.fbstore.collection('companys');
+
+      COMPANY_ITEMS.ref
+        .where('mobileNumber', '==', mobileNumber)
+        .get()
+        .then((snapshots) => {
+          if (snapshots.size > 0) {
+            snapshots.forEach((doc) => {
+              COMPANY_ITEMS.doc(doc.id).update({
+                companyName: this.updatesForm.get('companyName')!.value,
+                ownerName: this.updatesForm.get('ownerName')!.value,
+                firmActivity: this.updatesForm.get('firmActivity')!.value,
+                vehicleType: this.updatesForm.get('vehicleType')!.value,
+                mobileNumber:
+                  '+91' + this.updatesForm.get('mobileNumber')!.value,
+                alternateMobileNumber:
+                  '+91' + this.updatesForm.get('alternateMobileNumber')!.value,
+                location: this.updatesForm.get('location')!.value,
+                serviceProvidedLocation: this.updatesForm.get(
+                  'serviceProvidedLocation'
+                )!.value,
+                referenceName: this.updatesForm.get('referenceName')!.value,
+                language: this.updatesForm.get('language')!.value,
+                vehicleNos: this.updatesForm.get('vehicleNos')!.value,
+                aadharNumber: this.updatesForm.get('aadharNumber')!.value,
+                drivingLicenseNumber: this.updatesForm.get(
+                  'drivingLicenseNumber'
+                )!.value,
+                paymentStatus: this.updatesForm.get('paymentStatus')!.value,
+                accountStatus: this.updatesForm.get('accountStatus')!.value,
+                passwordPin: this.updatesForm.get('passwordPin')!.value,
+                payment_date: this.updatesForm.get('payment_date')!.value,
+                updatedDate: new Date().toISOString().slice(0, 10),
+              });
+            });
+            this.toastr.success('Updated successfully in db!', 'Great Job!');
+            this.showUpdateForm = false;
+            this.submitted = false;
+            this.updatedValue = true;
+            this.updatesForm.reset();
+            this.searchForm.reset();
+          }
+        });
     }
   }
 }

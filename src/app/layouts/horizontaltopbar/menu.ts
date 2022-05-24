@@ -47,6 +47,12 @@ export const MENU: MenuItem[] = [
         link: '/reports/allcity',
         parentId: 16,
       },
+      {
+        id: 23,
+        label: 'MENUITEMS.REPORTS.LIST.UPDATEDRECORD',
+        link: '/reports/updatedrecord',
+        parentId: 16,
+      },
     ],
   },
   {

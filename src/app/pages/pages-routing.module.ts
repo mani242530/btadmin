@@ -122,6 +122,13 @@ const routes: Routes = [
         (a) => a.MonthlyUserModule
       ),
   },
+  {
+    path: 'reports/updatedrecord',
+    loadChildren: () =>
+      import('./reports/updatedrecord/updatedrecord.module').then(
+        (a) => a.UpdatedRecordModule
+      ),
+  },
 ];
 
 @NgModule({
