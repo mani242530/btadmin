@@ -17,4 +17,7 @@ export interface MonthlyUser {
   userEntry: string;
   vehicleType: string[];
   vehicleNos: string;
+  payment_date: string;
+  registeredDate: string;
+  updatedDate: string;
 }

@@ -714,74 +714,50 @@ export class UpdatesComponent implements OnInit {
   }
 
   onSubmitUpdateData() {
+    console.log(this.updatesForm);
     const mobileNumber =
       this.CountryCode + this.updatesForm.get('mobileNumber')!.value;
-    if (this.updatesForm.valid) {
-      const companyObj = {
-        companyName: this.updatesForm.get('companyName')!.value,
-        ownerName: this.updatesForm.get('ownerName')!.value,
-        firmActivity: this.updatesForm.get('firmActivity')!.value,
-        vehicleType: this.updatesForm.get('vehicleType')!.value,
-        mobileNumber: '+91' + this.updatesForm.get('mobileNumber')!.value,
-        alternateMobileNumber:
-          '+91' + this.updatesForm.get('alternateMobileNumber')!.value,
-        location: this.updatesForm.get('location')!.value,
-        serviceProvidedLocation: this.updatesForm.get(
-          'serviceProvidedLocation'
-        )!.value,
-        referenceName: this.updatesForm.get('referenceName')!.value,
-        language: this.updatesForm.get('language')!.value,
-        vehicleNos: this.updatesForm.get('vehicleNos')!.value,
-        aadharNumber: this.updatesForm.get('aadharNumber')!.value,
-        drivingLicenseNumber: this.updatesForm.get('drivingLicenseNumber')!
-          .value,
-        paymentStatus: this.updatesForm.get('paymentStatus')!.value,
-        accountStatus: this.updatesForm.get('accountStatus')!.value,
-        passwordPin: this.updatesForm.get('passwordPin')!.value,
-      };
-      const COMPANY_ITEMS = this.fbstore.collection('companys');
+    const COMPANY_ITEMS = this.fbstore.collection('companys');
 
-      COMPANY_ITEMS.ref
-        .where('mobileNumber', '==', mobileNumber)
-        .get()
-        .then((snapshots) => {
-          if (snapshots.size > 0) {
-            snapshots.forEach((doc) => {
-              COMPANY_ITEMS.doc(doc.id).update({
-                companyName: this.updatesForm.get('companyName')!.value,
-                ownerName: this.updatesForm.get('ownerName')!.value,
-                firmActivity: this.updatesForm.get('firmActivity')!.value,
-                vehicleType: this.updatesForm.get('vehicleType')!.value,
-                mobileNumber:
-                  '+91' + this.updatesForm.get('mobileNumber')!.value,
-                alternateMobileNumber:
-                  '+91' + this.updatesForm.get('alternateMobileNumber')!.value,
-                location: this.updatesForm.get('location')!.value,
-                serviceProvidedLocation: this.updatesForm.get(
-                  'serviceProvidedLocation'
-                )!.value,
-                referenceName: this.updatesForm.get('referenceName')!.value,
-                language: this.updatesForm.get('language')!.value,
-                vehicleNos: this.updatesForm.get('vehicleNos')!.value,
-                aadharNumber: this.updatesForm.get('aadharNumber')!.value,
-                drivingLicenseNumber: this.updatesForm.get(
-                  'drivingLicenseNumber'
-                )!.value,
-                paymentStatus: this.updatesForm.get('paymentStatus')!.value,
-                accountStatus: this.updatesForm.get('accountStatus')!.value,
-                passwordPin: this.updatesForm.get('passwordPin')!.value,
-                payment_date: this.updatesForm.get('payment_date')!.value,
-                updatedDate: new Date().toISOString().slice(0, 10),
-              });
+    COMPANY_ITEMS.ref
+      .where('mobileNumber', '==', mobileNumber)
+      .get()
+      .then((snapshots) => {
+        if (snapshots.size > 0) {
+          snapshots.forEach((doc) => {
+            COMPANY_ITEMS.doc(doc.id).update({
+              // companyName: this.updatesForm.get('companyName')!.value,
+              // ownerName: this.updatesForm.get('ownerName')!.value,
+              firmActivity: this.updatesForm.get('firmActivity')!.value,
+              vehicleType: this.updatesForm.get('vehicleType')!.value,
+              // mobileNumber: '+91' + this.updatesForm.get('mobileNumber')!.value,
+              // alternateMobileNumber:
+              //   '+91' + this.updatesForm.get('alternateMobileNumber')!.value,
+              // location: this.updatesForm.get('location')!.value,
+              serviceProvidedLocation: this.updatesForm.get(
+                'serviceProvidedLocation'
+              )!.value,
+              referenceName: this.updatesForm.get('referenceName')!.value,
+              // language: this.updatesForm.get('language')!.value,
+              // vehicleNos: this.updatesForm.get('vehicleNos')!.value,
+              // aadharNumber: this.updatesForm.get('aadharNumber')!.value,
+              // drivingLicenseNumber: this.updatesForm.get(
+              //   'drivingLicenseNumber'
+              // )!.value,
+              paymentStatus: this.updatesForm.get('paymentStatus')!.value,
+              accountStatus: this.updatesForm.get('accountStatus')!.value,
+              passwordPin: this.updatesForm.get('passwordPin')!.value,
+              payment_date: this.updatesForm.get('payment_date')!.value,
+              updatedDate: new Date().toISOString().slice(0, 10),
             });
-            this.toastr.success('Updated successfully in db!', 'Great Job!');
-            this.showUpdateForm = false;
-            this.submitted = false;
-            this.updatedValue = true;
-            this.updatesForm.reset();
-            this.searchForm.reset();
-          }
-        });
-    }
+          });
+          this.toastr.success('Updated successfully in db!', 'Great Job!');
+          this.showUpdateForm = false;
+          this.submitted = false;
+          this.updatedValue = true;
+          this.updatesForm.reset();
+          this.searchForm.reset();
+        }
+      });
   }
 }

@@ -192,6 +192,9 @@
             <tr>
               <th sortable="location" (sort)="onSort($event)">Location</th>
               <th sortable="companyName" (sort)="onSort($event)">
+                Payment Date
+              </th>
+              <th sortable="companyName" (sort)="onSort($event)">
                 Company Name
               </th>
               <th sortable="ownerName" (sort)="onSort($event)">Owner Name</th>
@@ -205,6 +208,15 @@
                 Payment Status
               </th>
               <th sortable="paymentStatus" (sort)="onSort($event)">
+                Payment Date
+              </th>
+              <th sortable="paymentStatus" (sort)="onSort($event)">
+                Registered Date
+              </th>
+              <th sortable="paymentStatus" (sort)="onSort($event)">
+                Updated Date
+              </th>
+              <th sortable="paymentStatus" (sort)="onSort($event)">
                 Reference Name
               </th>
             </tr>
@@ -214,6 +226,12 @@
               <td>
                 <ngb-highlight
                   [result]="table.location"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.payment_date"
                   [term]="service.searchTerm"
                 ></ngb-highlight>
               </td>
@@ -245,6 +263,24 @@
               <td>
                 <ngb-highlight
                   [result]="table.paymentStatus"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.payment_date"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.registeredDate"
+                  [term]="service.searchTerm"
+                ></ngb-highlight>
+              </td>
+              <td>
+                <ngb-highlight
+                  [result]="table.updatedDate"
                   [term]="service.searchTerm"
                 ></ngb-highlight>
               </td>

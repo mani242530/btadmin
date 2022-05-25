@@ -77,6 +77,9 @@ export class MonthlyUserComponent implements OnInit {
     'firmActivity',
     'mobileNumber',
     'paymentStatus',
+    'payment_date',
+    'registeredDate',
+    'updatedDate',
     'referenceName',
   ];
 
@@ -457,6 +460,9 @@ export class MonthlyUserComponent implements OnInit {
               userEntry: data.userEntry,
               vehicleType: data.vehicleType,
               vehicleNos: data.vehicleNos,
+              payment_date: data.payment_date,
+              registeredDate: data.registeredDate,
+              updatedDate: data.updatedDate,
             };
           });
         })

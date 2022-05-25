@@ -97,7 +97,7 @@
                 </ng-select>
               </div>
             </div>
-            <div class="col-md-4" *ngIf="!checkFirmActivityIsDriver">
+            <!-- <div class="col-md-4" *ngIf="!checkFirmActivityIsDriver">
               <div class="mb-3">
                 <label for="validationCustom02">Company name</label
                 ><span class="required-field"></span>
@@ -136,7 +136,7 @@
                   >
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <div class="row">
@@ -210,7 +210,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-4">
               <div class="mb-3">
                 <label for="validationCustom05">Vehicle Nos</label
@@ -274,9 +274,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-4">
               <div class="mb-3">
                 <label for="validationCustom05">Alternate Mobile Number</label>
@@ -353,7 +353,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="row">
             <div class="col-md-4">
@@ -449,10 +449,10 @@
                   formControlName="payment_date"
                 />
                 <div
-                  *ngIf="submit && form.paymentDate.errors"
+                  *ngIf="submit && form.payment_date.errors"
                   class="invalid-feedback"
                 >
-                  <span *ngIf="form.paymentDate.errors?.required"
+                  <span *ngIf="form.payment_date.errors?.required"
                     >Please provide a valid Payment Date.</span
                   >
                 </div>
